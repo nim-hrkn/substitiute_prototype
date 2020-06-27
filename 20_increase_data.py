@@ -13,19 +13,19 @@ if __name__ == "__main__":
     def parse_argument():
 
         argparser = argparse.ArgumentParser()
-        argparser.add_argument("--apply_step1",
+        argparser.add_argument("--increase_data",
                                default=False, action="store_true")
         args = argparser.parse_args()
 
         action = ["step2"]
-        if args.apply_step1:
+        if args.increase_data:
             action.append("step1")
         return action
 
 
     action = parse_argument()
 
-    metadata = {"structuretype": "prototype"}
+    metadata = {"purpose": "prototype", "status": "complete"}
 
     if "step1" in action:
 

@@ -674,7 +674,7 @@ class StructureNode(DirNode):
     """
 
     def __init__(self, basedir_prefix, kind="cif"):
-        super(StructureNode, self).__init__(basedir_prefix)
+        super().__init__(basedir_prefix)
 
         self.metadata_file = "metadata.json"
         self.structurefile_kind = "cif"
@@ -729,7 +729,7 @@ class StructureNode(DirNode):
         """
 
 
-        super_place_files = super(StructureNode, self).place_files()
+        super_place_files = super().place_files()
 
         if super_place_files:
 

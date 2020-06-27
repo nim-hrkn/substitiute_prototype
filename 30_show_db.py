@@ -7,15 +7,15 @@ if __name__ == "__main__":
     def parse_argument():
 
         argparser = argparse.ArgumentParser()
-        argparser.add_argument("--only_relax",
+        argparser.add_argument("--to_relax",
                                default=False, action="store_true")
         argparser.add_argument("--count",
                                default=False, action="store_true")
         args = argparser.parse_args()
 
         action = []
-        if args.only_relax:
-            action.append("only_relax")
+        if args.to_relax:
+            action.append("to_relax")
         else:
             action.append("all")
         if args.count:
@@ -28,8 +28,8 @@ if __name__ == "__main__":
     subs_db = subsMaterialsDatabase()
     # collection = subs_db.collection
 
-    if "only_relax" in action:
-        filter = {"structuretype": "to_relax"}
+    if "to_relax" in action:
+        filter = {"status": "to_relax"}
     if "all" in action:
         filter = {}
 

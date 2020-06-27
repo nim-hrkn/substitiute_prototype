@@ -47,7 +47,7 @@ if __name__ == "__main__":
             if not struc_matched:
                 print("execute new struc")
                 print("on new_basedir", new_basedir)
-                metadata = {"structuretype": "to_relax"}
+                metadata = {"purpose": "converged_ionic", "status": "to_relax" }
                 structurenode = StructureNode(new_basedir)
                 structurenode.place_files(new_struc, source_uuid=source_uuid,
                                           metadata=metadata)
