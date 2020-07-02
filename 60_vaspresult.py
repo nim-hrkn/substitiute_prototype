@@ -10,6 +10,8 @@ class fakeVaspRunNode(StructureNode):
     def __init__(self, basedir_prefix):
         super().__init__(basedir_prefix)
 
+        self.result_status_file = "outcar.json"
+
     def make_MITRelaxSet_vasp_inputfiles(self, structure, targetdir,
                                         write_all=True):
         """make VASP input files
@@ -97,11 +99,35 @@ class fakeVaspRunNode(StructureNode):
         e_conv = True
         dic = {"converged_electronic": e_conv, "converged_ionic": i_conv}
         print(dic)
-        filename = os.path.join(self.get_currentdir(), "outcar.json")
+        filename = os.path.join(self.get_currentdir(), self.result_status_file)
         with open(filename,"w") as f:
             f.write(json.dumps(dic))
         return dic  
 
+    def check_result(self):
+        """check vasp result
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        dict of convergence
+        """
+        filename = os.path.join(self.get_currentdir(), self.result_status_file)
+        with open(filename) as f:
+            dic = json.loads(f.read())
+
+        i_conv = dic["converged_ionic"]
+        # change metadata
+        dicm = self.load_currentdir_metadata()
+        if i_conv:
+            if dicm["purpose"]=="converged_ionic":
+                dicm["status"] = "done"
+                self.save_currentdir_metadata(dicm)        
+
+        return dic  
 
 
 if __name__ == "__main__":
@@ -115,10 +141,12 @@ if __name__ == "__main__":
         kind = x["kind"]
         positionfile = x["positionfile"]
 
-        print(id_, hostname, basedir_prefix, current_dir, kind, positionfile)
+        print(id_,  basedir_prefix)
         calc = fakeVaspRunNode(basedir_prefix)
-        calc.place_files()
+        result = calc.check_result()
+
+        print(result)
+
         subs_db.delete_one({"_id":id_})
         subs_db.add_files_under(basedir_prefix, StructureNode)
-        calc.run()
 

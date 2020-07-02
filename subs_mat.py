@@ -401,6 +401,20 @@ class subsMaterialsDatabase(object):
             doc.update(elm_long)
         return self.collection.insert_one(doc)
 
+    def delete_one(self,filterstring):
+        """delete db by filter
+
+        Parameters
+        ----------
+        filterstring: dic
+            filter to pass collection.delete_one()
+
+        Returns
+        -------
+            return value of collection.delete_one()
+        """
+        return self.collection.delete_one(filterstring)
+
     def subs_elem_query_sentence(self,subs_elm):
         """make query from sub_elm
 
@@ -559,7 +573,7 @@ class DirNode(object):
             os.makedirs(self.__basedir)
         self.save_basedir_uuid()
 
-    def set_new_step(self, new_step):
+    def set_new_step(self, new_step=None):
         """set new current_step
 
         Parameters
@@ -571,6 +585,8 @@ class DirNode(object):
         -------
         None
         """
+        if new_step is None:
+            new_step = str(uuid.uuid4())
         self.__current_step = new_step
 
     def read_current_step(self):
@@ -721,8 +737,6 @@ class DirNode(object):
                  False if not created
         """
 
-        self.save_basedir_metadata_file()
-
         targetdir = self.get_currentdir()
         # make directory if not exist
         if os.path.isdir(targetdir):
@@ -740,6 +754,7 @@ class DirNode(object):
         else:
             os.makedirs(targetdir)
             self.save_currentdir_uuid()
+        self.save_basedir_metadata_file()
 
         return True
 
@@ -762,6 +777,25 @@ class DirNode(object):
                "current_dir":  self.get_currentdir(),
                "uuid" : uuid}
         return dic
+
+
+def element_list(species):
+    """make species of material
+
+    Parameters
+    ----------
+    species: a list of atomic species
+        material species
+
+    Returns
+    -------
+    species: dict (Structure.species)
+    """
+    counter = Counter(species)
+    elementlist = []
+    for x in counter:
+        elementlist.append([str(x), counter[x]])
+    return elementlist
 
 
 class StructureNode(DirNode):
@@ -809,13 +843,54 @@ class StructureNode(DirNode):
  
         return dic
 
+    def save_currentdir_metadata(self,dic):
+        """save currentdir metadata file
+        
+        Parameters
+        ----------
+        dic: dict
+            dictionary to save
+
+        Returns
+        -------
+        None
+
+        """
+        targetdir = self.get_currentdir()
+        filename = os.path.join(targetdir, self.metadata_file)
+        with open(filename, "w") as f:
+            f.write(json.dumps(dic))
+
+    def load_currentdir_metadata(self):
+        """load currentdir metadata file
+        
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        """
+        targetdir = self.get_currentdir()
+        filename = os.path.join(targetdir, self.metadata_file)
+        with open(filename) as f:
+            dic = json.loads(f.read())
+        return dic
+
+
     def place_files(self, structure, source_uuid=None, metadata=None):
         """copy files from source_prefix
 
         Parameters
         ----------
-        source_step : string
-            directory full path
+        structure: pymatgen.structure
+            material structure 
+        source_uuid : string
+            uuid file
+        metadata: dic
+            metadata to add
 
         Returns
         -------
@@ -855,13 +930,9 @@ class StructureNode(DirNode):
                 poscar.write_file(poscarpath)
                 print("write", poscarpath)
 
-            species = structure.element_list()
+            species = element_list(structure.species)
             dic.update({"species": species, "nspecies": len(species)})
-
-            filename = os.path.join(targetdir, self.metadata_file)
-            with open(filename, "w") as f:
-                f.write(json.dumps(dic))
-
+            self.save_currentdir_metadata(dic)
             return True
         else:
             return False
@@ -1035,7 +1106,6 @@ class SubsStructure(Structure):
                                  coords=new_frac_coords, coords_are_cartesian=False)
         return newstruc
 
-
     def element_list(self):
         """make species of material
 
@@ -1053,3 +1123,4 @@ class SubsStructure(Structure):
         for x in counter:
             elementlist.append([str(x), counter[x]])
         return elementlist
+
