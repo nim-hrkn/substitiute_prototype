@@ -535,27 +535,45 @@ class DirNode(object):
     """dirctory access interface for automatic calculation
     """
 
-    def __init__(self, basedir_prefix, hostname="localhost"):
+    def __init__(self, basedir, hostname="localhost",
+                 metadata_file="metadata.json", uuid_file="_uuid"):
         """initialize dir_node
 
         Parameters
         ----------
-        basedir_prefix: base file path
+        basedir: base file path
 
         hostname: hostname
 
         create: boolean
             create the first directores or not
         """
-        self.basedir_prefix = basedir_prefix
-        if not os.path.isdir(self.basedir_prefix):
-            os.makedirs(self.basedir_prefix)
+        self.__basedir = basedir
+        if not os.path.isdir(basedir): 
+            os.makedirs(basedir)
+        self.__metadata_file = metadata_file
+        self.__uuid_file = uuid_file
+        self.__current_step = self.read_current_step()
 
-        self.status_file = "status.json"
-        self.uuid_file = "_uuid"
-        self.current_step = self.get_current_step()
+        if not os.path.isdir(self.__basedir):
+            os.makedirs(self.__basedir)
+        self.save_basedir_uuid()
 
-    def get_current_step(self):
+    def set_new_step(self, new_step):
+        """set new current_step
+
+        Parameters
+        ----------
+        new_step: string
+            new current_step
+
+        Returns
+        -------
+        None
+        """
+        self.__current_step = new_step
+
+    def read_current_step(self):
         """return current_step
 
         Parameters
@@ -567,7 +585,8 @@ class DirNode(object):
         current_step : string
             directory name
         """
-        filename = os.path.join(self.basedir_prefix, self.status_file)
+        filename = os.path.join(self.__basedir,
+                                self.__metadata_file)
         status = None
         if os.path.isfile(filename):
             with open(filename) as f:
@@ -581,7 +600,23 @@ class DirNode(object):
                 f.write(json.dumps(status))
             return current_step
 
-    def get_current_uuid(self):
+    def get_currentdir(self):
+        """get current directory full path
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        targetdir: string
+            taret directory name with current step
+
+        """
+        targetdir = os.path.join(self.__basedir, self.__current_step)
+        return targetdir
+
+    def read_currentdir_uuid(self):
         """reuturn uuid of the current_step
 
         Parameters
@@ -589,22 +624,89 @@ class DirNode(object):
         None
 
         Returns
+        -------
         uuid: string
             UUID
         """
-        filename = os.path.join(self.basedir_prefix,
-                                self.get_current_step(), self.uuid_file)
+        filename = os.path.join(self.get_currentdir(),
+                                self.__uuid_file)
         uuid = None
         with open(filename) as f:
             uuid = f.read()
         return uuid
 
-    def get_current_dir(self):
-        """get current directory full path
+    def save_basedir_metadata_file(self):
+        """save basedir status file
 
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        True
         """
-        targetdir = os.path.join(self.basedir_prefix, self.current_step)
-        return targetdir
+        filename = os.path.join(self.__basedir,
+                                self.__metadata_file)
+        status = {"current_step": self.__current_step}
+        with open(filename, "w") as f:
+            f.write(json.dumps(status))
+        return True
+
+    def save_basedir_uuid(self):
+        """save basedir uuid
+        create it only once.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        boolean:
+            True if newly created
+            False if already existed 
+        """
+
+        print(self.__basedir)
+        print(self.__uuid_file)
+        filename = os.path.join(self.__basedir,
+                                self.__uuid_file)
+        if not os.path.exists(filename):
+            with open(filename, "w") as f:
+                f.write(str(uuid.uuid4()))
+            return True
+        else:
+            return False
+
+    def save_currentdir_uuid(self, uuidstr=None):
+        """save current uuid
+        create it only once.
+
+        Paremeters
+        ----------
+        uuidstr: string (default: None)
+            uuid
+
+        Returns
+        -------
+        boolean:
+            True if newly created
+            False if already existed 
+        """
+        # current UUID
+        if uuidstr is None:
+            uuidstr = str(uuid.uuid4())
+        print("uuidstr",uuidstr)
+        targetdir = self.get_currentdir()
+        filename = os.path.join(targetdir, self.__uuid_file)
+        if not os.path.exists(filename):
+            with open(filename, "w") as f:
+                f.write(uuidstr)
+            return True
+        else:
+            return False
+
 
     def place_files(self):
         """generate real place
@@ -619,35 +721,28 @@ class DirNode(object):
                  False if not created
         """
 
-        basedir_prefix = self.basedir_prefix
-        print("targetdir", basedir_prefix, self.current_step)
+        self.save_basedir_metadata_file()
 
-        targetdir = os.path.join(basedir_prefix, self.current_step)
+        targetdir = self.get_currentdir()
         # make directory if not exist
         if os.path.isdir(targetdir):
-            return False
+            # make new directory 
+            # save old uuid and step
+            old_uuid = self.read_currentdir_uuid()
+            old_step = self.__current_step
+            # make new uuid and step
+            currentdir_uuid = str(uuid.uuid4())
+            self.set_new_step(currentdir_uuid)
+            targetdir = self.get_currentdir()
+            print("targetdir",targetdir)
+            os.makedirs(targetdir)
+            self.save_currentdir_uuid(currentdir_uuid)
         else:
             os.makedirs(targetdir)
-
-        filename = os.path.join(basedir_prefix, self.status_file)
-        if not os.path.isfile(filename):
-            status = {"current_step": self.current_step}
-            with open(filename, "w") as f:
-                f.write(json.dumps(status))
-
-        # directory UUID
-        filename = os.path.join(basedir_prefix, self.uuid_file)
-        if not os.path.exists(filename):
-            with open(filename, "w") as f:
-                f.write(str(uuid.uuid4()))
-
-        # current UUID
-        filename = os.path.join(targetdir, self.uuid_file)
-        if not os.path.exists(filename):
-            with open(filename, "w") as f:
-                f.write(str(uuid.uuid4()))
+            self.save_currentdir_uuid()
 
         return True
+
 
     def as_dict(self):
         """get information as dict
@@ -661,10 +756,10 @@ class DirNode(object):
         dict: information of the content 
         """
         hostname = "localhost"
-        uuid = self.get_current_uuid()
+        uuid = self.read_currentdir_uuid()
         dic = {"hostname": hostname,
-               "basedir_prefix": self.basedir_prefix,
-               "current_dir":  self.get_current_dir(),
+               "basedir_prefix": self.__basedir,
+               "current_dir":  self.get_currentdir(),
                "uuid" : uuid}
         return dic
 
@@ -692,7 +787,7 @@ class StructureNode(DirNode):
         dict: information of the content 
         """
         dic = super().as_dict()
-        current_dir = self.get_current_dir()
+        current_dir = self.get_currentdir()
 
         if False:
             kind = self.structurefile_kind
@@ -733,7 +828,7 @@ class StructureNode(DirNode):
 
         if super_place_files:
 
-            targetdir = os.path.join(self.basedir_prefix, self.current_step)
+            targetdir = self.get_currentdir()
             if source_uuid is not None:
                 dic = {"source_uuid": source_uuid}
             else:
