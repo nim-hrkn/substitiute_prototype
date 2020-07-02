@@ -71,7 +71,7 @@ class fakeVaspRunNode(StructureNode):
         structure = Structure.from_file(positionpath)
         source_uuid = self.read_currentdir_uuid()
         self.set_new_step()
-        metadata = {"purpose": "converged_ionic", "status": "to_relax" }
+        metadata = {"purpose": "converged_ionic", "achievement": "to_relax" }
         super().place_files(structure, source_uuid = source_uuid, metadata=metadata)
         current_dir = self.get_currentdir()
         print("currentdir", current_dir)
@@ -92,8 +92,22 @@ class fakeVaspRunNode(StructureNode):
         dic 
         """
 
+        self.update_currentdir_metadata({"achievement": "running"})
 
-        i_conv = random.random()> 0.3
+    def run_result(self):
+        """get result of dry run
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        dic
+        """
+
+        self.update_currentdir_metadata({"achievement": "executed"})
+        i_conv = random.random()> 0.1
         e_conv = True
         dic = {"converged_electronic": e_conv, "converged_ionic": i_conv}
         print(dic)
@@ -105,20 +119,26 @@ class fakeVaspRunNode(StructureNode):
 
 
 if __name__ == "__main__":
+    random.seed(10)
+
     subs_db = subsMaterialsDatabase()
-    filter = {"purpose": "converged_ionic", "status": "to_relax"}
+    filter = {"purpose": "converged_ionic", "achievement": "to_relax"}
     for x in subs_db.find(filter):
         id_ = x["_id"]
         hostname = x["hostname"]
-        basedir_prefix = x["basedir_prefix"]
-        current_dir = x["current_dir"]
+        basedir_prefix = x["basedir"]
+        struc = StructureNode(basedir_prefix)
+        current_dir = struc.get_currentdir()
         kind = x["kind"]
         positionfile = x["positionfile"]
 
         print(id_, hostname, basedir_prefix, current_dir, kind, positionfile)
         calc = fakeVaspRunNode(basedir_prefix)
         calc.place_files()
+        calc.run()
+
+        calc.run_result()
         subs_db.delete_one({"_id":id_})
         subs_db.add_files_under(basedir_prefix, StructureNode)
-        calc.run()
+
 

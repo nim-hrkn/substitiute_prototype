@@ -50,6 +50,6 @@ def copy_files_to_calc_directory(souce_prefix, target_base, metadata):
 
 
 if __name__ == "__main__":
-    metadata = {"purpose": "prototype", "status": "complete"}
+    metadata = {"purpose": "prototype", "achievement": "completed"}
     copy_files_to_calc_directory("Pham-RT/rt_stage5/RUN.00?/mp-*",
                                  "Calc/MGI", metadata)

@@ -73,7 +73,7 @@ class fakeVaspRunNode(StructureNode):
         structure = Structure.from_file(positionpath)
         source_uuid = self.read_currentdir_uuid()
         self.set_new_step()
-        metadata = {"purpose": "converged_ionic", "status": "to_relax" }
+        metadata = {"purpose": "converged_ionic", "achievement": "to_relax" }
         super().place_files(structure, source_uuid = source_uuid, metadata=metadata)
         current_dir = self.get_currentdir()
         print("currentdir", current_dir)
@@ -95,7 +95,7 @@ class fakeVaspRunNode(StructureNode):
         """
 
 
-        i_conv = random.random()> 0.3
+        i_conv = random.random()> 0.1
         e_conv = True
         dic = {"converged_electronic": e_conv, "converged_ionic": i_conv}
         print(dic)
@@ -124,20 +124,24 @@ class fakeVaspRunNode(StructureNode):
         dicm = self.load_currentdir_metadata()
         if i_conv:
             if dicm["purpose"]=="converged_ionic":
-                dicm["status"] = "done"
-                self.save_currentdir_metadata(dicm)        
+                dicm["achievement"] = "completed"
+        else:
+            if dicm["purpose"]=="converged_ionic":
+                dicm["achievement"] = "to_relax"
+        self.save_currentdir_metadata(dicm)        
 
         return dic  
 
 
 if __name__ == "__main__":
+    random.seed(10)
     subs_db = subsMaterialsDatabase()
-    filter = {"purpose": "converged_ionic", "status": "to_relax"}
+    filter = {"purpose": "converged_ionic", "achievement": "executed"}
     for x in subs_db.find(filter):
         id_ = x["_id"]
         hostname = x["hostname"]
-        basedir_prefix = x["basedir_prefix"]
-        current_dir = x["current_dir"]
+        basedir_prefix = x["basedir"]
+        current_dir = StructureNode(basedir_prefix).get_currentdir()
         kind = x["kind"]
         positionfile = x["positionfile"]
 

@@ -9,6 +9,11 @@ if __name__ == "__main__":
         argparser = argparse.ArgumentParser()
         argparser.add_argument("--to_relax",
                                default=False, action="store_true")
+        argparser.add_argument("--executed",
+                               default=False, action="store_true")
+        argparser.add_argument("--completed",
+                               default=False, action="store_true")
+ 
         argparser.add_argument("--count",
                                default=False, action="store_true")
         args = argparser.parse_args()
@@ -16,6 +21,10 @@ if __name__ == "__main__":
         action = []
         if args.to_relax:
             action.append("to_relax")
+        elif args.executed:
+            action.append("executed")
+        elif args.completed:
+            action.append("completed")
         else:
             action.append("all")
         if args.count:
@@ -29,15 +38,20 @@ if __name__ == "__main__":
     # collection = subs_db.collection
 
     if "to_relax" in action:
-        filter = {"status": "to_relax"}
+        filterstring = {"achievement": "to_relax"}
+    elif "executed" in action:
+        filterstring = {"achievement": "executed"}
+    elif "completed" in action:
+        filterstring = {"achievement": "completed"}
+
     if "all" in action:
-        filter = {}
+        filterstring = {}
 
     if "count" in action:
-        n = subs_db.count_documents(filter)
+        n = subs_db.count_documents(filterstring)
         print(n)
     else:
-        for x in subs_db.find(filter):
+        for x in subs_db.find(filterstring):
             print(x)
 
  

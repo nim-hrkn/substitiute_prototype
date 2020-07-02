@@ -27,205 +27,6 @@ from pymongo import MongoClient
 from pymatgen.core.periodic_table import Element, Specie, DummySpecie
 
 
-if False:
-    def load_inputfile(basedir):
-        """get files in basedir
-
-        Parameters
-        ----------
-        basedir: string
-            file path
-
-        Returns
-        -------
-        dict on "basedir","poscar","outcar","ciffile"
-
-        """
-        poscar = None
-        outcar = None
-        ciffile = None
-        uuid = None
-        outcar_json = None
-
-        filename = os.path.join(basedir, "status.json")
-        with open(filename) as f:
-            s = f.read()
-            dic = json.loads(s)
-        current_step = dic["current_step"]
-
-        pattern = re.compile(r'\.cif$')
-        for filepath in glob.glob(os.path.join(basedir, current_step, "*")):
-            filesplits = os.path.split(filepath)
-
-            filename = filesplits[-1]
-
-            if filename == "POSCAR":
-                poscar = filepath
-            elif filename == "OUTCAR":
-                outcar = filepath
-            elif filename == "outcar.json":
-                outcar_json = filepath
-            elif filename == "_uuid":
-                uuid = filepath
-
-            m = pattern.search(filename)
-            if m is not None:
-                ciffile = filepath
-
-        if poscar is None and ciffile is None:
-            print("no geometry file")
-            print(basedir)
-            raise
-
-        d = {"basedir": basedir,
-             "poscar": poscar, "outcar_json": outcar_json,
-             "outcar": outcar, "ciffile": ciffile, "uuid": uuid}
-        return d
-
-
-    def make_positionfiles_list(place="Calc/mp-*"):
-        """get file information in place
-
-        Parameters
-        ----------
-        place: string
-            file path
-
-        Returns
-        -------
-        a list of dict
-            dict contains poscar,cif,outcar files
-
-        """
-        filelist = glob.glob(os.path.join(os.getcwd(), place))
-        d_list = []
-        for filepath in filelist:
-            d = load_inputfile(filepath)
-            d_list.append(d)
-
-        d2_list = []
-        for d in d_list:
-            d2 = {}
-
-            positionfile = {}
-            positionfile.update({"hostame": "localhost", "basedir": d["basedir"]})
-
-            filename = d["uuid"]
-            uuid_str = None
-            with open(filename) as f:
-                uuid_str = f.read()
-            if uuid_str is None:
-                print("error no uuid")
-                print(d)
-
-            positionfile.update({"uuid": uuid_str})
-            if d["ciffile"] is not None:
-                positionfile.update({"kind": "cif", "positionfile": d["ciffile"]})
-            else:
-                positionfile.update({"kind": "poscar",
-                                     "positionfile": d["poscar"]})
-
-            d2.update({"materialfile": positionfile})
-
-            d2.update({"calc_status": None})
-
-            filename = d2["materialfile"]["positionfile"]
-            print("filename", filename)
-            if filename is None:
-                print(d)
-                print("possible error")
-
-            structure = SubsStructure.from_file(filename)
-            species = structure.element_list()
-            d2.update({"species": species, "nspecies": len(species)})
-            d2_list.append(d2)
-
-            if False:
-                filename = d["outcar_json"]
-                print("outcar_json", filename)
-                with open(filename) as f:
-                    s = f.read()
-                outcar_dic = json.loads(s)
-                for key in ["converged_electronic", "converged_ionic"]:
-                    d2.update({key: outcar_dic[key]})
-            d2_list.append(d2)
-
-        return d2_list
-
-if False:
-    def make_vasp_inputfiles(position_info, write_all=True):
-        """make VASP input files
-
-        Parameters
-        ----------
-        position_info: dict
-            contains dict of input files for a material
-
-        write_all: bool = True
-            flag to use pymatgen.MITRelaxSet.write_input() or not
-
-        Returns
-        -------
-        dict: {"local_rundir": }
-
-        """
-        if position_info["positionfile"]["kind"] == "poscar":
-            structure = Structure.from_file(position_info["positionfile"]["path"])
-        elif position_info["positionfile"]["kind"] == "cif":
-            parser = CifParser(position_info["positionfile"]["path"])
-            structure = parser.get_structures()[0]
-
-        outputdir = os.path.join(position_info["basedir"], "RUN0001")
-        try:
-            os.mkdir(outputdir)
-        except FileExistsError:
-            pass
-
-        mitset = MITRelaxSet(structure, standardize=True)
-
-        if write_all:
-            mitset.write_input(outputdir)
-        else:
-            kpoint = mitset.kpoints
-            incar = mitset.incar
-            poscar = mitset.poscar
-
-            poscarfile = os.path.join(outputdir, "POSCAR")
-            poscar.write_file(poscarfile)
-            kpointfile = os.path.join(outputdir, "KPOINT")
-            kpoint.write_file(kpointfile)
-            incarfile = os.path.join(outputdir, "INCAR")
-            incar.write_file(incarfile)
-            # skip writing "POTCAR"
-
-        return {"local_rundir": outputdir}
-
-
-    def get_compostion_from_file(filename):
-        """read filename structure file and convert into Compostion
-
-        Parameters
-        ----------
-        filename: string
-            filename of POSCAR, cif, inputfile
-
-        Returns
-        -------
-        Composition object
-
-        """
-        structure = Structure.from_file(filename)
-
-        counter = Counter(structure.species)
-        elementlist = []
-        for x in counter:
-            elementlist.append(str(x)+str(counter[x]))
-
-        materialname = "".join(elementlist)
-
-        material = Composition(materialname)
-        return material
-
 
 class Outcar_suppl(object):
     """alternate class for pymatgen Outcar
@@ -468,6 +269,7 @@ class subsMaterialsDatabase(object):
         collection.find() result
         """
         query_sentence = self.subs_elem_query_sentence(subs_elm)
+        query_sentence.update({"achievement": "completed"})
         return self.find(query_sentence)
 
 
@@ -773,8 +575,7 @@ class DirNode(object):
         hostname = "localhost"
         uuid = self.read_currentdir_uuid()
         dic = {"hostname": hostname,
-               "basedir_prefix": self.__basedir,
-               "current_dir":  self.get_currentdir(),
+               "basedir": self.__basedir,
                "uuid" : uuid}
         return dic
 
@@ -870,7 +671,7 @@ class StructureNode(DirNode):
 
         Returns
         -------
-        None
+        dict
 
         """
         targetdir = self.get_currentdir()
@@ -878,6 +679,23 @@ class StructureNode(DirNode):
         with open(filename) as f:
             dic = json.loads(f.read())
         return dic
+
+    def update_currentdir_metadata(self,dic):
+        """update currentdir metadata file
+
+        Parameters
+        ----------
+        dic: dict
+            dictionary to add
+
+        Returns
+        -------
+        dict 
+        """
+        d = self.load_currentdir_metadata()
+        d.update(dic)
+        self.save_currentdir_metadata(d)
+        return d
 
 
     def place_files(self, structure, source_uuid=None, metadata=None):
@@ -1118,9 +936,5 @@ class SubsStructure(Structure):
         -------
         species: dict (Structure.species)
         """
-        counter = Counter(self.species)
-        elementlist = []
-        for x in counter:
-            elementlist.append([str(x), counter[x]])
-        return elementlist
+        return element_list(self.species)
 

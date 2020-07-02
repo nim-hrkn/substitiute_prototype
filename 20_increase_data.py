@@ -25,7 +25,7 @@ if __name__ == "__main__":
 
     action = parse_argument()
 
-    metadata = {"purpose": "prototype", "status": "complete"}
+    metadata = {"purpose": "prototype", "achievement": "completed"}
 
     if "step1" in action:
 
@@ -51,8 +51,10 @@ if __name__ == "__main__":
 
             for find in subs_db.find_subs_elems(subs_elm):
                 print(find["species"])
+                basedir = find["basedir"]
                 positionfilename = find["positionfile"]
-                current_dir = find["current_dir"]
+                struc = StructureNode(basedir)
+                current_dir = struc.get_currentdir()
                 positionfile_path = os.path.join(current_dir, positionfilename)
                 uuid = find["uuid"]
 
@@ -62,8 +64,6 @@ if __name__ == "__main__":
                 # make Structure
                 structure2 = structure.substitute_elements(subs_elm)
 
-                basedir = find["basedir_prefix"]
-                print("basedir", basedir)
                 # target apth
                 basedir_prefix = ",".join([basedir, subs_prefix])
                 print("basedir_prefix", basedir_prefix)
