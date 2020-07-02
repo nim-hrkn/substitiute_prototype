@@ -1,4 +1,5 @@
 import os
+import random
 from subs_mat import subsMaterialsDatabase,\
                         subs_elms_to_prefix,\
                         SubsStructure, StructureNode
@@ -7,6 +8,9 @@ from pymatgen.analysis.structure_matcher import StructureMatcher
 
 
 if __name__ == "__main__":
+
+    random.seed(10)
+
     subs_db = subsMaterialsDatabase()
 
     subs_elm_list = [[["Cu", "Fe"]]]
