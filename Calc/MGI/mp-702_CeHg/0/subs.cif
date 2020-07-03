@@ -1,16 +1,16 @@
 # generated using pymatgen
 data_CeHg
 _symmetry_space_group_name_H-M   'P 1'
-_cell_length_a   3.84597717
-_cell_length_b   3.89593403
-_cell_length_c   3.86717654
-_cell_angle_alpha   90.92700271
-_cell_angle_beta   90.99616147
-_cell_angle_gamma   91.85696632
+_cell_length_a   3.86609846
+_cell_length_b   3.92165119
+_cell_length_c   3.88807584
+_cell_angle_alpha   90.99048961
+_cell_angle_beta   91.75856562
+_cell_angle_gamma   90.45611234
 _symmetry_Int_Tables_number   1
 _chemical_formula_structural   CeHg
 _chemical_formula_sum   'Ce1 Hg1'
-_cell_volume   57.89719984
+_cell_volume   58.91032678
 _cell_formula_units_Z   1
 loop_
  _symmetry_equiv_pos_site_id
@@ -25,4 +25,4 @@ loop_
  _atom_site_fract_z
  _atom_site_occupancy
   Ce  Ce0  1  0.000000  0.000000  0.000000  1
-  Hg  Hg1  1  0.491633  0.490118  0.491337  1
+  Hg  Hg1  1  0.493600  0.497290  0.492650  1

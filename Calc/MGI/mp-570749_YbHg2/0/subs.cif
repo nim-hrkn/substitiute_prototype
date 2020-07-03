@@ -1,16 +1,16 @@
 # generated using pymatgen
 data_YbHg2
 _symmetry_space_group_name_H-M   'P 1'
-_cell_length_a   5.03913613
-_cell_length_b   5.04486736
-_cell_length_c   3.62348104
-_cell_angle_alpha   90.38299722
-_cell_angle_beta   91.55632913
-_cell_angle_gamma   121.29072176
+_cell_length_a   5.07838398
+_cell_length_b   5.03032340
+_cell_length_c   3.54880035
+_cell_angle_alpha   91.03880860
+_cell_angle_beta   90.92290571
+_cell_angle_gamma   120.68352703
 _symmetry_Int_Tables_number   1
 _chemical_formula_structural   YbHg2
 _chemical_formula_sum   'Yb1 Hg2'
-_cell_volume   78.66414432
+_cell_volume   77.91850934
 _cell_formula_units_Z   1
 loop_
  _symmetry_equiv_pos_site_id
@@ -25,5 +25,5 @@ loop_
  _atom_site_fract_z
  _atom_site_occupancy
   Yb  Yb0  1  0.000000  0.000000  0.000000  1
-  Hg  Hg1  1  0.326477  0.657026  0.490373  1
-  Hg  Hg2  1  0.665014  0.326080  0.498403  1
+  Hg  Hg1  1  0.327489  0.658671  0.498825  1
+  Hg  Hg2  1  0.661796  0.325198  0.496582  1

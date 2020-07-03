@@ -1,16 +1,16 @@
 # generated using pymatgen
 data_EuAg
 _symmetry_space_group_name_H-M   'P 1'
-_cell_length_a   4.86145999
-_cell_length_b   6.33765221
-_cell_length_c   8.06005854
-_cell_angle_alpha   91.74661896
-_cell_angle_beta   90.01340559
-_cell_angle_gamma   91.28115608
+_cell_length_a   4.80771696
+_cell_length_b   6.33484128
+_cell_length_c   8.09522463
+_cell_angle_alpha   90.37623965
+_cell_angle_beta   90.88523663
+_cell_angle_gamma   90.46721012
 _symmetry_Int_Tables_number   1
 _chemical_formula_structural   EuAg
 _chemical_formula_sum   'Eu4 Ag4'
-_cell_volume   248.15482752
+_cell_volume   246.50601908
 _cell_formula_units_Z   4
 loop_
  _symmetry_equiv_pos_site_id
@@ -25,10 +25,10 @@ loop_
  _atom_site_fract_z
  _atom_site_occupancy
   Eu  Eu0  1  0.750000  0.867219  0.821415  1
-  Eu  Eu1  1  0.241348  0.361670  0.674488  1
-  Eu  Eu2  1  0.742732  0.623657  0.311876  1
-  Eu  Eu3  1  0.247867  0.125862  0.177253  1
-  Ag  Ag4  1  0.242277  0.622354  0.040101  1
-  Ag  Ag5  1  0.749780  0.119603  0.450907  1
-  Ag  Ag6  1  0.741962  0.371725  0.957310  1
-  Ag  Ag7  1  0.247435  0.873938  0.533215  1
+  Eu  Eu1  1  0.247154  0.358986  0.673447  1
+  Eu  Eu2  1  0.748115  0.623668  0.320282  1
+  Eu  Eu3  1  0.246894  0.126631  0.178194  1
+  Ag  Ag4  1  0.240292  0.617256  0.032104  1
+  Ag  Ag5  1  0.745684  0.123565  0.449303  1
+  Ag  Ag6  1  0.741961  0.368169  0.953954  1
+  Ag  Ag7  1  0.245979  0.868984  0.535776  1

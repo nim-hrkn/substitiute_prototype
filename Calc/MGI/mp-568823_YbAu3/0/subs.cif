@@ -1,16 +1,16 @@
 # generated using pymatgen
 data_YbAu3
 _symmetry_space_group_name_H-M   'P 1'
-_cell_length_a   5.10476309
-_cell_length_b   5.39700402
-_cell_length_c   5.87440407
-_cell_angle_alpha   90.53426106
-_cell_angle_beta   90.11191504
-_cell_angle_gamma   91.17554842
+_cell_length_a   5.08957041
+_cell_length_b   5.43280239
+_cell_length_c   5.86060294
+_cell_angle_alpha   90.78686970
+_cell_angle_beta   91.63117320
+_cell_angle_gamma   90.30740345
 _symmetry_Int_Tables_number   1
 _chemical_formula_structural   YbAu3
 _chemical_formula_sum   'Yb2 Au6'
-_cell_volume   161.80087027
+_cell_volume   161.96573748
 _cell_formula_units_Z   2
 loop_
  _symmetry_equiv_pos_site_id
@@ -25,10 +25,10 @@ loop_
  _atom_site_fract_z
  _atom_site_occupancy
   Yb  Yb0  1  0.250000  0.656275  0.250000  1
-  Yb  Yb1  1  0.749288  0.335087  0.748580  1
-  Au  Au2  1  0.743376  0.834693  -0.006087  1
-  Au  Au3  1  0.247118  0.161128  0.494488  1
-  Au  Au4  1  0.247233  0.154369  0.994914  1
-  Au  Au5  1  0.740094  0.829643  0.488725  1
-  Au  Au6  1  0.242630  0.664679  0.741329  1
-  Au  Au7  1  0.745572  0.322619  0.242708  1
+  Yb  Yb1  1  0.747233  0.334456  0.744168  1
+  Au  Au2  1  0.740293  0.830097  -0.005708  1
+  Au  Au3  1  0.248391  0.160820  0.497217  1
+  Au  Au4  1  0.242774  0.158536  0.993948  1
+  Au  Au5  1  0.744518  0.827357  0.495423  1
+  Au  Au6  1  0.241145  0.666453  0.744029  1
+  Au  Au7  1  0.749004  0.320230  0.240139  1

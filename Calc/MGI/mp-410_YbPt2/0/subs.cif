@@ -1,16 +1,16 @@
 # generated using pymatgen
 data_YbPt2
 _symmetry_space_group_name_H-M   'P 1'
-_cell_length_a   5.48455353
-_cell_length_b   5.48564091
-_cell_length_c   5.42586771
-_cell_angle_alpha   61.22212504
-_cell_angle_beta   61.86004281
-_cell_angle_gamma   60.09213305
+_cell_length_a   5.43097443
+_cell_length_b   5.42944814
+_cell_length_c   5.50752902
+_cell_angle_alpha   60.77763345
+_cell_angle_beta   61.77090922
+_cell_angle_gamma   61.31301736
 _symmetry_Int_Tables_number   1
 _chemical_formula_structural   YbPt2
 _chemical_formula_sum   'Yb2 Pt4'
-_cell_volume   118.12549846
+_cell_volume   118.14111784
 _cell_formula_units_Z   2
 loop_
  _symmetry_equiv_pos_site_id
@@ -25,8 +25,8 @@ loop_
  _atom_site_fract_z
  _atom_site_occupancy
   Yb  Yb0  1  0.125000  0.125000  0.125000  1
-  Yb  Yb1  1  0.868861  0.865651  0.868624  1
-  Pt  Pt2  1  -0.009999  0.491434  0.497379  1
-  Pt  Pt3  1  0.496250  -0.002900  0.499703  1
-  Pt  Pt4  1  0.490233  0.498772  -0.001049  1
-  Pt  Pt5  1  0.499041  0.494129  0.494969  1
+  Yb  Yb1  1  0.871498  0.872076  0.869280  1
+  Pt  Pt2  1  -0.009750  0.491320  0.490369  1
+  Pt  Pt3  1  0.494156  -0.005840  0.495311  1
+  Pt  Pt4  1  0.499920  0.493642  -0.007456  1
+  Pt  Pt5  1  0.495630  0.499862  0.494299  1

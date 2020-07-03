@@ -1,16 +1,16 @@
 # generated using pymatgen
 data_CeCd
 _symmetry_space_group_name_H-M   'P 1'
-_cell_length_a   3.91983931
-_cell_length_b   3.91313657
-_cell_length_c   3.88179416
-_cell_angle_alpha   91.13289955
-_cell_angle_beta   91.19330019
-_cell_angle_gamma   90.97814709
+_cell_length_a   3.92743060
+_cell_length_b   3.90951370
+_cell_length_c   3.89462400
+_cell_angle_alpha   91.27402547
+_cell_angle_beta   90.20877319
+_cell_angle_gamma   91.92378121
 _symmetry_Int_Tables_number   1
 _chemical_formula_structural   CeCd
 _chemical_formula_sum   'Ce1 Cd1'
-_cell_volume   59.50866895
+_cell_volume   59.75033940
 _cell_formula_units_Z   1
 loop_
  _symmetry_equiv_pos_site_id
@@ -25,4 +25,4 @@ loop_
  _atom_site_fract_z
  _atom_site_occupancy
   Ce  Ce0  1  0.500000  0.500000  0.500000  1
-  Cd  Cd1  1  -0.002048  -0.009618  -0.000128  1
+  Cd  Cd1  1  -0.003848  -0.003527  -0.000775  1

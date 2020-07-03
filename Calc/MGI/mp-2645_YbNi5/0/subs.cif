@@ -1,16 +1,16 @@
 # generated using pymatgen
 data_YbNi5
 _symmetry_space_group_name_H-M   'P 1'
-_cell_length_a   4.85866087
-_cell_length_b   4.86671725
-_cell_length_c   4.03044708
-_cell_angle_alpha   91.76278334
-_cell_angle_beta   91.03168455
-_cell_angle_gamma   120.77545671
+_cell_length_a   4.85896980
+_cell_length_b   4.90728564
+_cell_length_c   3.95268858
+_cell_angle_alpha   90.77781257
+_cell_angle_beta   90.95862161
+_cell_angle_gamma   120.78131615
 _symmetry_Int_Tables_number   1
 _chemical_formula_structural   YbNi5
 _chemical_formula_sum   'Yb1 Ni5'
-_cell_volume   81.78026812
+_cell_volume   80.93388153
 _cell_formula_units_Z   1
 loop_
  _symmetry_equiv_pos_site_id
@@ -25,8 +25,8 @@ loop_
  _atom_site_fract_z
  _atom_site_occupancy
   Yb  Yb0  1  0.000000  0.000000  0.000000  1
-  Ni  Ni1  1  0.323869  0.663541  -0.006878  1
-  Ni  Ni2  1  0.660280  0.324487  -0.006834  1
-  Ni  Ni3  1  0.493665  -0.008702  0.491706  1
-  Ni  Ni4  1  0.494845  0.498854  0.490479  1
-  Ni  Ni5  1  -0.008908  0.494721  0.490889  1
+  Ni  Ni1  1  0.324648  0.659009  -0.002064  1
+  Ni  Ni2  1  0.658744  0.331624  -0.004626  1
+  Ni  Ni3  1  0.497552  -0.001636  0.495841  1
+  Ni  Ni4  1  0.491175  0.498670  0.493207  1
+  Ni  Ni5  1  -0.008922  0.492316  0.494769  1
