@@ -4,7 +4,7 @@ import random
 from pymatgen.core.structure import Structure
 from pymatgen.io.vasp.sets import MITRelaxSet
 
-from subs_mat import StructureNode
+from subsMat import StructureNode
 
 
 class fakeVaspRunNode(StructureNode):

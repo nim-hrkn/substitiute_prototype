@@ -1,8 +1,8 @@
 import os
 import random
-from subs_mat import subsMaterialsDatabase,\
-                        subs_elms_to_prefix,\
-                        SubsStructure, StructureNode
+from subsMat import subsMaterialsDatabase,\
+                    subs_elms_to_prefix,\
+                    SubsStructure, StructureNode
 from pymatgen.core.structure import Structure
 from pymatgen.analysis.structure_matcher import StructureMatcher
 

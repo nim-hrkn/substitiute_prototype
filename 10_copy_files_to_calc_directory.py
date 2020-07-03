@@ -1,7 +1,7 @@
 
 import glob
 import os
-from subs_mat import SubsStructure, StructureNode
+from subsMat import SubsStructure, StructureNode
 
 
 def copy_files_to_calc_directory(souce_prefix, target_base, metadata):

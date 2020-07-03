@@ -1,6 +1,6 @@
 import random
 
-from subs_mat import subsMaterialsDatabase, StructureNode
+from subsMat import subsMaterialsDatabase, StructureNode
 
 from fakevasprun import fakeVaspRunNode
 

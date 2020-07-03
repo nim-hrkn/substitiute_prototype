@@ -1,5 +1,5 @@
 import argparse
-from subs_mat import subsMaterialsDatabase
+from subsMat import subsMaterialsDatabase
 
 
 if __name__ == "__main__":

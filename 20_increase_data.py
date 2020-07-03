@@ -1,12 +1,15 @@
-from subs_mat import subs_elms_to_prefix,\
-                     SubsStructure, StructureNode,\
-                     subsMaterialsDatabase
+from subsMat import subs_elms_to_prefix,\
+                    SubsStructure, StructureNode,\
+                    subsMaterialsDatabase
 
 import os
 import argparse
+import random
 
 
 if __name__ == "__main__":
+
+    random.seed(10)
 
     def parse_argument():
         """define argument parser

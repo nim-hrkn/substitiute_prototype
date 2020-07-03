@@ -1,7 +1,7 @@
 
 import random
 
-from subs_mat import subsMaterialsDatabase, StructureNode
+from subsMat import subsMaterialsDatabase, StructureNode
 
 from fakevasprun import fakeVaspRunNode
 
@@ -23,5 +23,5 @@ if __name__ == "__main__":
 
         print(result)
 
-        subs_db.delete_one({"_id": id})
+        subs_db.delete_one({"_id": id_})
         subs_db.add_files_under(basedir_prefix, StructureNode)
