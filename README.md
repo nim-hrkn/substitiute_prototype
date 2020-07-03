@@ -108,7 +108,7 @@ subdirectory内の構造が構造最適化を行う事を示す。
 1. -> 2. -> 3. -> (1.もしくは4.)に遷移する。
 
 
-# サンプル実行
+# サンプルの説明
 
 purposeとachievementで検索を行い、対応する状態にある物質に対して操作を行っていく。そして状態を変更する。
 
@@ -171,3 +171,136 @@ databaseの中身の表示。
 ### 95_remove_collection.py
 
 collectionの削除。
+
+
+# 実行例
+## 20_add_fake_data.py
+```
+$ python 20_add_fake_data.py
+initial database size 71
+subsitute elements [['Fe', 'Cu']]
+3 directories are created.
+subsitute elements [['Ni', 'Cu']]
+/home/kino/anaconda3/lib/python3.7/site-packages/pymatgen/io/cif.py:1099: UserWarning: Issues encountered while parsing CIF: Some fractional co-ordinates rounded to ideal values to avoid issues with finite precision.
+  warnings.warn("Issues encountered while parsing CIF: %s" % "\n".join(self.warnings))
+7 directories are created.
+subsitute elements [['Cu', 'Co']]
+5 directories are created.
+subsitute elements [['Zn', 'Cu']]
+6 directories are created.
+subsitute elements [['Gd', 'Y']]
+19 directories are created.
+subsitute elements [['Yb', 'Y']]
+34 directories are created.
+total 74 directories are created.
+final database size 145
+```
+
+## 30_generate_subs.py
+```
+$ python 30_generate_subs.py
+substitute elements [['Cu', 'Fe']]
+new_basedir /home/kino/tmp/substitute_prototype/Calc/MGI/mp-21305_GdNi5,Ni_Cu,Cu_Fe
+new_basedir /home/kino/tmp/substitute_prototype/Calc/MGI/mp-542437_Gd2Zn17,Zn_Cu,Cu_Fe
+...
+new_basedir /home/kino/tmp/substitute_prototype/Calc/MGI/mp-1261_EuZn,Zn_Cu,Cu_Co
+database size 220
+75 data to relax
+```
+## 40_fakevasprun.py
+```
+$ python 40_fakevasprun.py
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-21305_GdNi5,Ni_Cu,Cu_Fe
+/home/kino/anaconda3/lib/python3.7/site-packages/pymatgen/io/vasp/sets.py:418: BadInputSetWarning: Relaxation of likely metal with ISMEAR < 1 detected. Please see VASP recommendations on ISMEAR for metals.
+  "ISMEAR for metals.", BadInputSetWarning)
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-542437_Gd2Zn17,Zn_Cu,Cu_Fe
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-657_YbZn2,Zn_Cu,Cu_Fe
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-567538_YbCu2,Yb_Y,Cu_Fe
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-580354_CeNi3,Ni_Cu,Cu_Fe
+...
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-581942_CeCu6,Cu_Co
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-1261_EuZn,Zn_Cu,Cu_Co
+75 running
+```
+## 50_fakevaspresult.py
+```
+$ python 50_fakevaspresult.py
+Counter({True: 58, False: 17}) True if converged
+75 executed
+```
+
+## 60_retieve_vaspresult.py
+```
+$ python 60_retieve_vaspresult.py
+75 data processed.
+Counter({'completed': 58, 'to_relax': 17})
+```
+
+## 40_fakevasprun.py
+```
+$ python 40_fakevasprun.py
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-22311_EuNi5,Ni_Cu,Cu_Fe
+/home/kino/anaconda3/lib/python3.7/site-packages/pymatgen/io/vasp/sets.py:418: BadInputSetWarning: Relaxation of likely metal with ISMEAR < 1 detected. Please see VASP recommendations on ISMEAR for metals.
+  "ISMEAR for metals.", BadInputSetWarning)
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-614455_GdCu,Cu_Fe
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-636253_GdCu5,Gd_Y,Cu_Fe
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-567538_YbCu2,Cu_Fe
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-1703_YbZn,Zn_Cu,Cu_Fe
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-567538_YbCu2,Yb_Y,Cu_Ni
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-581734_Gd2Fe17,Fe_Cu,Cu_Ni
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-22311_EuNi5,Ni_Cu,Cu_Ni
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-20089_GdFe2,Fe_Cu,Cu_Ni
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-1607_YbCu5,Yb_Y,Cu_Ni
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-2645_YbNi5,Ni_Cu,Cu_Ni
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-1665_YbFe2,Fe_Cu,Cu_Ni
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-21305_GdNi5,Ni_Cu,Cu_Co
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-567538_YbCu2,Cu_Co
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-1703_YbZn,Zn_Cu,Cu_Co
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-636253_GdCu5,Cu_Co
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-581942_CeCu6,Cu_Co
+17 running
+```
+
+## 50_fakevaspresult.py
+```
+$ python 50_fakevaspresult.py
+Counter({True: 15, False: 2}) True if converged
+17 executed
+```
+
+## 60_retieve_vaspresult.py
+```
+$ python 60_retieve_vaspresult.py
+17 data processed.
+Counter({'completed': 15, 'to_relax': 2})
+```
+
+## 40_fakevasprun.py
+```
+$ python 40_fakevasprun.py
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-20089_GdFe2,Fe_Cu,Cu_Ni
+/home/kino/anaconda3/lib/python3.7/site-packages/pymatgen/io/vasp/sets.py:418: BadInputSetWarning: Relaxation of likely metal with ISMEAR < 1 detected. Please see VASP recommendations on ISMEAR for metals.
+  "ISMEAR for metals.", BadInputSetWarning)
+run /home/kino/tmp/substitute_prototype/Calc/MGI/mp-636253_GdCu5,Cu_Co
+2 running
+```
+
+## 50_fakevaspresult.py
+```
+$ python 50_fakevaspresult.py
+Counter({True: 2}) True if converged
+2 executed
+```
+
+## 60_retieve_vaspresult.py
+```
+$ python 60_retieve_vaspresult.py
+2 data processed.
+Counter({'completed': 2})
+```
+
+## 90_show_collection.py
+```
+$ python 90_show_collection.py
+[['all', 220], ['to_relax', 0], ['running', 0], ['executed', 0], ['completed', 220]]
+```
