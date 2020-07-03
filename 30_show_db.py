@@ -13,7 +13,7 @@ if __name__ == "__main__":
                                default=False, action="store_true")
         argparser.add_argument("--completed",
                                default=False, action="store_true")
- 
+
         argparser.add_argument("--count",
                                default=False, action="store_true")
         args = argparser.parse_args()
@@ -30,7 +30,6 @@ if __name__ == "__main__":
         if args.count:
             action.append("count")
         return action
-
 
     action = parse_argument()
 
@@ -53,5 +52,3 @@ if __name__ == "__main__":
     else:
         for x in subs_db.find(filterstring):
             print(x)
-
- 

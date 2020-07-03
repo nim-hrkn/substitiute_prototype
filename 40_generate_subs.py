@@ -14,8 +14,8 @@ if __name__ == "__main__":
     subs_db = subsMaterialsDatabase()
 
     subs_elm_list = [[["Cu", "Fe"]]]
-    subs_elm_list.append( [["Cu", "Ni"]])
-    subs_elm_list.append( [["Cu", "Co"]])
+    subs_elm_list.append([["Cu", "Ni"]])
+    subs_elm_list.append([["Cu", "Co"]])
 
     for subs_elm in subs_elm_list:
         print("substitute", subs_elm)
@@ -44,8 +44,9 @@ if __name__ == "__main__":
                 basedir_comp = x["basedir"]
                 positionfilename_comp = y["positionfile"]
                 struc_comp = StructureNode(basedir_comp)
-                current_dir_comp =  struc_comp.get_currentdir()
-                filename_comp = os.path.join(current_dir_comp, positionfilename_comp)
+                current_dir_comp = struc_comp.get_currentdir()
+                filename_comp = os.path.join(current_dir_comp,
+                                             positionfilename_comp)
                 struc_comp = Structure.from_file(filename_comp)
                 struc_matcher = StructureMatcher()
                 match = struc_matcher.fit(new_struc, struc_comp)
@@ -55,8 +56,9 @@ if __name__ == "__main__":
             if not struc_matched:
                 print("execute new struc")
                 print("on new_basedir", new_basedir)
-                metadata = {"purpose": "converged_ionic", "achievement": "to_relax" }
+                metadata = {"purpose": "converged_ionic",
+                            "achievement": "to_relax"}
                 structurenode = StructureNode(new_basedir)
                 structurenode.place_files(new_struc, source_uuid=source_uuid,
                                           metadata=metadata)
-                subs_db.add_files_under(new_basedir,StructureNode)
+                subs_db.add_files_under(new_basedir, StructureNode)

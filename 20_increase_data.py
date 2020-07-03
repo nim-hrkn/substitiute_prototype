@@ -1,10 +1,8 @@
-from subs_mat import  subs_elms_to_prefix,\
-                      SubsStructure, StructureNode,\
-                      subsMaterialsDatabase
+from subs_mat import subs_elms_to_prefix,\
+                     SubsStructure, StructureNode,\
+                     subsMaterialsDatabase
 
-from pymatgen.core.structure import Structure
 import os
-import shutil
 import argparse
 
 
@@ -22,7 +20,6 @@ if __name__ == "__main__":
             action.append("step1")
         return action
 
-
     action = parse_argument()
 
     metadata = {"purpose": "prototype", "achievement": "completed"}
@@ -31,7 +28,7 @@ if __name__ == "__main__":
 
         current_step = "0"
         subs_db = subsMaterialsDatabase().\
-                  initialize_with_dirs("Calc/MGI/mp-*", StructureNode)
+            initialize_with_dirs("Calc/MGI/mp-*", StructureNode)
 
         subs_elm_list = [[["Fe", "Cu"]]]
         subs_elm_list.append([["Ni", "Cu"]])

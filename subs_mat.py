@@ -6,26 +6,22 @@ import glob
 import json
 import numpy as np
 import os
-import random
 import re
-import shutil
 import uuid
 from pathlib import Path
 from typing import Union, List, Sequence
-
 from collections import Counter
+
 from monty.io import reverse_readfile
+
 from pymatgen.core.composition import Composition
 from pymatgen.core.lattice import Lattice
 from pymatgen.core.structure import Structure
-from pymatgen.io.cif import CifParser, CifWriter
 from pymatgen.io.vasp.inputs import Poscar
-from pymatgen.io.vasp.outputs import Outcar
-from pymatgen.io.vasp.sets import MITRelaxSet
-from pymongo import MongoClient
-
+from pymatgen.io.cif import CifWriter
 from pymatgen.core.periodic_table import Element, Specie, DummySpecie
 
+from pymongo import MongoClient
 
 
 class Outcar_suppl(object):
@@ -202,7 +198,7 @@ class subsMaterialsDatabase(object):
             doc.update(elm_long)
         return self.collection.insert_one(doc)
 
-    def delete_one(self,filterstring):
+    def delete_one(self, filterstring):
         """delete db by filter
 
         Parameters
@@ -216,7 +212,7 @@ class subsMaterialsDatabase(object):
         """
         return self.collection.delete_one(filterstring)
 
-    def subs_elem_query_sentence(self,subs_elm):
+    def subs_elem_query_sentence(self, subs_elm):
         """make query from sub_elm
 
         Parameters
@@ -248,7 +244,7 @@ class subsMaterialsDatabase(object):
         """
         return self.collection.count_documents(query)
 
-    def find(self,query):
+    def find(self, query):
         """find()
 
         Parameters
@@ -257,7 +253,7 @@ class subsMaterialsDatabase(object):
         """
         return self.collection.find(query)
 
-    def find_subs_elems(self,subs_elm):
+    def find_subs_elems(self, subs_elm):
         """find with subs_elm
 
         Parameters
@@ -271,7 +267,6 @@ class subsMaterialsDatabase(object):
         query_sentence = self.subs_elem_query_sentence(subs_elm)
         query_sentence.update({"achievement": "completed"})
         return self.find(query_sentence)
-
 
     def add_files_under(self, dirname, wrapperclass, absolute_path=True):
         """initialize database using files under dirname directory
@@ -327,7 +322,6 @@ class subsMaterialsDatabase(object):
         return self
 
 
-
 def subs_elms_to_prefix(subs_elm):
     """make prefix from subs_elm list
 
@@ -365,7 +359,7 @@ class DirNode(object):
             create the first directores or not
         """
         self.__basedir = basedir
-        if not os.path.isdir(basedir): 
+        if not os.path.isdir(basedir):
             os.makedirs(basedir)
         self.__metadata_file = metadata_file
         self.__uuid_file = uuid_file
@@ -483,7 +477,7 @@ class DirNode(object):
         -------
         boolean:
             True if newly created
-            False if already existed 
+            False if already existed
         """
 
         print(self.__basedir)
@@ -510,12 +504,12 @@ class DirNode(object):
         -------
         boolean:
             True if newly created
-            False if already existed 
+            False if already existed
         """
         # current UUID
         if uuidstr is None:
             uuidstr = str(uuid.uuid4())
-        print("uuidstr",uuidstr)
+        print("uuidstr", uuidstr)
         targetdir = self.get_currentdir()
         filename = os.path.join(targetdir, self.__uuid_file)
         if not os.path.exists(filename):
@@ -524,7 +518,6 @@ class DirNode(object):
             return True
         else:
             return False
-
 
     def place_files(self):
         """generate real place
@@ -542,15 +535,15 @@ class DirNode(object):
         targetdir = self.get_currentdir()
         # make directory if not exist
         if os.path.isdir(targetdir):
-            # make new directory 
+            # make new directory
             # save old uuid and step
-            old_uuid = self.read_currentdir_uuid()
-            old_step = self.__current_step
+            # old_uuid = self.read_currentdir_uuid()
+            # old_step = self.__current_step
             # make new uuid and step
             currentdir_uuid = str(uuid.uuid4())
             self.set_new_step(currentdir_uuid)
             targetdir = self.get_currentdir()
-            print("targetdir",targetdir)
+            print("targetdir", targetdir)
             os.makedirs(targetdir)
             self.save_currentdir_uuid(currentdir_uuid)
         else:
@@ -559,7 +552,6 @@ class DirNode(object):
         self.save_basedir_metadata_file()
 
         return True
-
 
     def as_dict(self):
         """get information as dict
@@ -570,13 +562,13 @@ class DirNode(object):
 
         Returns
         -------
-        dict: information of the content 
+        dict: information of the content
         """
         hostname = "localhost"
         uuid = self.read_currentdir_uuid()
         dic = {"hostname": hostname,
                "basedir": self.__basedir,
-               "uuid" : uuid}
+               "uuid": uuid}
         return dic
 
 
@@ -619,7 +611,7 @@ class StructureNode(DirNode):
 
         Returns
         -------
-        dict: information of the content 
+        dict: information of the content
         """
         dic = super().as_dict()
         current_dir = self.get_currentdir()
@@ -627,26 +619,26 @@ class StructureNode(DirNode):
         if False:
             kind = self.structurefile_kind
             if kind == "cif":
-                structure_file = os.path.join(current_dir,self.cif_filename)
+                structure_file = os.path.join(current_dir, self.cif_filename)
             elif kind == "poscar":
-                structure_file = os.path.join(current_dir,"POSCAR")
+                structure_file = os.path.join(current_dir, "POSCAR")
 
             structure = SubsStructure.from_file(structure_file)
             species = structure.element_list()
 
             dic.update({"positionfile": structure_file,
-                         "species": species, "nspecies": len(species)})
+                        "species": species, "nspecies": len(species)})
 
-        metadata_file = os.path.join(current_dir,self.metadata_file)
+        metadata_file = os.path.join(current_dir, self.metadata_file)
         with open(metadata_file) as f:
             d = json.loads(f.read())
             dic.update(d)
- 
+
         return dic
 
-    def save_currentdir_metadata(self,dic):
+    def save_currentdir_metadata(self, dic):
         """save currentdir metadata file
-        
+
         Parameters
         ----------
         dic: dict
@@ -664,7 +656,7 @@ class StructureNode(DirNode):
 
     def load_currentdir_metadata(self):
         """load currentdir metadata file
-        
+
         Parameters
         ----------
         None
@@ -680,7 +672,7 @@ class StructureNode(DirNode):
             dic = json.loads(f.read())
         return dic
 
-    def update_currentdir_metadata(self,dic):
+    def update_currentdir_metadata(self, dic):
         """update currentdir metadata file
 
         Parameters
@@ -690,13 +682,12 @@ class StructureNode(DirNode):
 
         Returns
         -------
-        dict 
+        dict
         """
         d = self.load_currentdir_metadata()
         d.update(dic)
         self.save_currentdir_metadata(d)
         return d
-
 
     def place_files(self, structure, source_uuid=None, metadata=None):
         """copy files from source_prefix
@@ -704,7 +695,7 @@ class StructureNode(DirNode):
         Parameters
         ----------
         structure: pymatgen.structure
-            material structure 
+            material structure
         source_uuid : string
             uuid file
         metadata: dic
@@ -715,7 +706,6 @@ class StructureNode(DirNode):
         boolean: True if created
                 False if not created
         """
-
 
         super_place_files = super().place_files()
 
@@ -755,51 +745,12 @@ class StructureNode(DirNode):
         else:
             return False
 
-if False:
-    def copy_files_to_calc_directory(souce_prefix, target_base):
-        """create basedir_prefix directory
-        copy OUTCAR,POSCAR,*cif to basedir_prefix/
-
-        Parameters
-        ----------
-        source_prefix: string
-            directory name to pass glob
-
-        basedir_prefix: string
-            base directory name to write
-
-        Returns
-        -------
-        None
-
-        """
-
-        filelist = list(glob.glob(souce_prefix))
-
-        for filepath in filelist:
-            filepath_ce_list = list(glob.glob(os.path.join(filepath, "[CE]_*")))
-            if len(filepath_ce_list) > 1:
-                print(">1", filepath_ce_list)
-                continue
-            if len(filepath_ce_list) == 0:
-                print("no files", filepath_ce_list)
-                raise
-            filepath_ce = glob.glob(os.path.join(filepath, "[CE]_*"))[0]
-            dirsplits = filepath_ce.split("/")
-            basedir_prefix = os.path.join(target_base, dirsplits[3])
-
-            structure_file = glob.glob(os.path.join(filepath_ce,"*.cif"))[0]
-            structure = Structure.from_file(structure_file)
-
-            structurenode = StructureNode(basedir_prefix)
-            ret = structurenode.place_files(structure)
-            print(ret,structure_file)
-
 
 class SubsStructure(Structure):
     def __init__(self,
                  lattice: Union[List, np.ndarray, Lattice],
-                 species: Sequence[Union[str, Element, Specie, DummySpecie, Composition]],
+                 species: Sequence[Union[str, Element, Specie,
+                                   DummySpecie, Composition]],
                  coords: Sequence[Sequence[float]],
                  charge: float = None,
                  validate_proximity: bool = False,
@@ -811,7 +762,6 @@ class SubsStructure(Structure):
             validate_proximity=validate_proximity, to_unit_cell=to_unit_cell,
             coords_are_cartesian=coords_are_cartesian,
             site_properties=site_properties)
-
 
     def substitute_elements(self, subs_elems):
         """substitute elements specified by subs_elems
@@ -858,7 +808,6 @@ class SubsStructure(Structure):
 
         return SubsStructure.from_dict(struc_dic)
 
-
     def randomize_structure(self):
         """make new structure with random modification
 
@@ -897,7 +846,6 @@ class SubsStructure(Structure):
             new_lattice = Lattice.from_parameters(a, b, c, alpha, beta, gamma)
             return new_lattice
 
-
         def make_new_frac_coors(frac_coords):
             """ make new frac coord with small modification
 
@@ -911,17 +859,18 @@ class SubsStructure(Structure):
                 frac coord with small modification
             """
             fac = 0.01
-            rr = np.random.rand(frac_coords.shape[0], frac_coords.shape[1]) * fac
+            rr = np.random.rand(frac_coords.shape[0],
+                                frac_coords.shape[1]) * fac
             rr[0, :] = [0, 0, 0]
             rr
             new_frac_coords = frac_coords - rr
             return new_frac_coords
 
-
         new_lattice = make_new_lattice(self.lattice)
         new_frac_coords = make_new_frac_coors(self.frac_coords)
         newstruc = SubsStructure(lattice=new_lattice, species=self.species,
-                                 coords=new_frac_coords, coords_are_cartesian=False)
+                                 coords=new_frac_coords,
+                                 coords_are_cartesian=False)
         return newstruc
 
     def element_list(self):
@@ -937,4 +886,3 @@ class SubsStructure(Structure):
         species: dict (Structure.species)
         """
         return element_list(self.species)
-
