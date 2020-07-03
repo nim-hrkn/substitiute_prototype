@@ -5,7 +5,8 @@ from subs_mat import subsMaterialsDatabase
 if __name__ == "__main__":
 
     def parse_argument():
-
+        """define argument parser
+        """
         argparser = argparse.ArgumentParser()
         argparser.add_argument("--to_relax",
                                default=False, action="store_true")

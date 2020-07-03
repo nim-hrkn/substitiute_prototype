@@ -144,9 +144,9 @@ class elementListExpansion(object):
 
 
 class subsMaterialsDatabase(object):
-    """subsMaterialsDatabase access library
+    """database access library
 
-    Please use .collection to access the DB directly.
+    You can use .collection to access the DB directly.
 
     """
 
@@ -160,6 +160,8 @@ class subsMaterialsDatabase(object):
 
     def collection_remove(self, query=None):
         """remove collection
+
+        the same as collection.remove()
 
         Parameters
         ----------
@@ -178,6 +180,8 @@ class subsMaterialsDatabase(object):
 
     def insert_one(self, doc, element_expansion=True):
         """insert doc
+
+        also add element columns using elementListExpansion class
 
         Parameters
         ----------
@@ -199,7 +203,9 @@ class subsMaterialsDatabase(object):
         return self.collection.insert_one(doc)
 
     def delete_one(self, filterstring):
-        """delete db by filter
+        """delete DB by filter
+
+        the same as collecton.delete_one()
 
         Parameters
         ----------
@@ -214,6 +220,8 @@ class subsMaterialsDatabase(object):
 
     def subs_elem_query_sentence(self, subs_elm):
         """make query from sub_elm
+
+        It uses element columns. 
 
         Parameters
         ----------
@@ -231,7 +239,7 @@ class subsMaterialsDatabase(object):
         return query_elm_dic
 
     def count_documents(self, query):
-        """count_documents
+        """count_documents by collection.count_documents(query)
 
         Parameters
         ----------
@@ -245,7 +253,8 @@ class subsMaterialsDatabase(object):
         return self.collection.count_documents(query)
 
     def find(self, query):
-        """find()
+        """find with query by collection.find(query)
+
 
         Parameters
         ----------
@@ -254,7 +263,9 @@ class subsMaterialsDatabase(object):
         return self.collection.find(query)
 
     def find_subs_elems(self, subs_elm):
-        """find with subs_elm
+        """find with materials by subs_elm
+
+        It uses self.subs_elem_query_sentence(subs_elm).
 
         Parameters
         ----------
@@ -300,6 +311,8 @@ class subsMaterialsDatabase(object):
     def initialize_with_dirs(self, location, wrapperclass):
         """initialize database using files under location directory
 
+        It uses self.add_files_under().
+
         Parameters
         ----------
         location: string
@@ -307,7 +320,7 @@ class subsMaterialsDatabase(object):
 
         wrapperclass: class
             a class to load information
-            must has .as_dixt() to save into the database
+            must has .as_dict() to save into the database
 
         Returns
         -------
@@ -323,7 +336,9 @@ class subsMaterialsDatabase(object):
 
 
 def subs_elms_to_prefix(subs_elm):
-    """make prefix from subs_elm list
+    """make string from subs_elm list
+
+    It may be usd as postfix.
 
     Parameters
     ----------
@@ -343,6 +358,17 @@ def subs_elms_to_prefix(subs_elm):
 
 class DirNode(object):
     """dirctory access interface for automatic calculation
+
+
+    basedir has subdirectories inside as basedir/{id}.
+
+    basedir has uuid.
+    subdir has another uuid.
+
+    metadata contains information on the current directory.
+
+    self.place_files() creats subdirectory if basedir/{id} doesn't exist. 
+
     """
 
     def __init__(self, basedir, hostname="localhost",
@@ -388,6 +414,8 @@ class DirNode(object):
     def read_current_step(self):
         """return current_step
 
+        read_*() members read information from the file on demand.
+
         Parameters
         ----------
         None
@@ -414,6 +442,8 @@ class DirNode(object):
 
     def get_currentdir(self):
         """get current directory full path
+
+        get_*() members make information from variables of the class.
 
         Parameters
         ----------
@@ -448,7 +478,7 @@ class DirNode(object):
         return uuid
 
     def save_basedir_metadata_file(self):
-        """save basedir status file
+        """save basedir metadata file
 
         Parameters
         ----------
@@ -492,7 +522,7 @@ class DirNode(object):
             return False
 
     def save_currentdir_uuid(self, uuidstr=None):
-        """save current uuid
+        """save current directory uuid
         create it only once.
 
         Paremeters
@@ -520,7 +550,9 @@ class DirNode(object):
             return False
 
     def place_files(self):
-        """generate real place
+        """place files on the current subdirectory.
+
+        als make the new step, and the new subdirectory when the actual body doesn't exisst
 
         Parameters
         ----------
@@ -528,8 +560,7 @@ class DirNode(object):
 
         Returns
         -------
-        boolean: True if created
-                 False if not created
+        boolean: always True
         """
 
         targetdir = self.get_currentdir()
@@ -556,6 +587,8 @@ class DirNode(object):
     def as_dict(self):
         """get information as dict
 
+        it is used to save them into metadatafile.
+
         Parameters
         ----------
         None
@@ -575,6 +608,8 @@ class DirNode(object):
 def element_list(species):
     """make species of material
 
+    helper subroutine
+
     Parameters
     ----------
     species: a list of atomic species
@@ -592,7 +627,7 @@ def element_list(species):
 
 
 class StructureNode(DirNode):
-    """vasp directory access interface for automatic calculation
+    """vasp directory access interface
     """
 
     def __init__(self, basedir_prefix, kind="cif"):
@@ -604,6 +639,8 @@ class StructureNode(DirNode):
 
     def as_dict(self):
         """get information as dict
+
+        It is used to save them into the metadata file.
 
         Parameters
         ----------
@@ -637,7 +674,7 @@ class StructureNode(DirNode):
         return dic
 
     def save_currentdir_metadata(self, dic):
-        """save currentdir metadata file
+        """save dic into the currentdir metadata file
 
         Parameters
         ----------
@@ -663,7 +700,7 @@ class StructureNode(DirNode):
 
         Returns
         -------
-        dict
+        dict: the content of the metadata file
 
         """
         targetdir = self.get_currentdir()
@@ -690,7 +727,7 @@ class StructureNode(DirNode):
         return d
 
     def place_files(self, structure, source_uuid=None, metadata=None):
-        """copy files from source_prefix
+        """place files
 
         Parameters
         ----------
@@ -704,7 +741,7 @@ class StructureNode(DirNode):
         Returns
         -------
         boolean: True if created
-                False if not created
+                 False if not created
         """
 
         super_place_files = super().place_files()
@@ -747,6 +784,8 @@ class StructureNode(DirNode):
 
 
 class SubsStructure(Structure):
+    """Another pymatgen.Structure class for element substitution
+    """
     def __init__(self,
                  lattice: Union[List, np.ndarray, Lattice],
                  species: Sequence[Union[str, Element, Specie,
@@ -820,20 +859,23 @@ class SubsStructure(Structure):
         pymatgen.Struture with small ramdon modification
         """
 
-        def make_new_lattice(lattice):
+        def make_new_lattice(lattice, afac=0.1, alphafac=2):
             """make new lattice with small modification
 
             Parameters
             ----------
-            lattice : Structure.lattice
+            lattice: Structure.lattice
+                lattice information
+            afac: float
+                a factor for lattice length modification
+            alphafac: float
+                a factor for lattice angle modification
 
             Returns
             -------
             Structure.lattice
                 new structure with small modification
             """
-            afac = 0.1
-            alphafac = 2
 
             r = np.random.rand(6)
             a = lattice.a + r[0] * afac
@@ -846,23 +888,25 @@ class SubsStructure(Structure):
             new_lattice = Lattice.from_parameters(a, b, c, alpha, beta, gamma)
             return new_lattice
 
-        def make_new_frac_coors(frac_coords):
+        def make_new_frac_coors(frac_coords, fac=0.01):
             """ make new frac coord with small modification
 
             Parameters
             ----------
             frac_coords : np.array, Structure.frac_coords
+                atomic posiiton
+
+            fac: float
+                factor for random displacement.
 
             Returns
             -------
             np.array
                 frac coord with small modification
             """
-            fac = 0.01
             rr = np.random.rand(frac_coords.shape[0],
                                 frac_coords.shape[1]) * fac
             rr[0, :] = [0, 0, 0]
-            rr
             new_frac_coords = frac_coords - rr
             return new_frac_coords
 
@@ -875,6 +919,8 @@ class SubsStructure(Structure):
 
     def element_list(self):
         """make species of material
+
+        call external element_list()
 
         Parameters
         ----------

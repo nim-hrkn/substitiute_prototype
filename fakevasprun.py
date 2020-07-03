@@ -8,6 +8,8 @@ from subs_mat import StructureNode
 
 
 class fakeVaspRunNode(StructureNode):
+    """fake VASP class to run without VASP
+    """
     def __init__(self, basedir_prefix):
         super().__init__(basedir_prefix)
 
@@ -29,6 +31,7 @@ class fakeVaspRunNode(StructureNode):
 
         write_all: bool = True
             flag to use pymatgen.MITRelaxSet.write_input() or not
+            It must be True for real run.
 
         Returns
         -------
@@ -109,7 +112,7 @@ class fakeVaspRunNode(StructureNode):
 
         Returns
         -------
-        dic
+        dic: the content of self.result_status_file
         """
 
         self.update_currentdir_metadata({"achievement": "executed"})
@@ -124,6 +127,7 @@ class fakeVaspRunNode(StructureNode):
 
     def check_result(self):
         """check vasp result
+            read result from self.result_status_file
 
         Parameters
         ----------

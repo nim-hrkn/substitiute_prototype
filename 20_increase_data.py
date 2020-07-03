@@ -9,6 +9,8 @@ import argparse
 if __name__ == "__main__":
 
     def parse_argument():
+        """define argument parser
+        """
 
         argparser = argparse.ArgumentParser()
         argparser.add_argument("--increase_data",
