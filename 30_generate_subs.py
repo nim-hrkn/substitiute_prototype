@@ -18,7 +18,7 @@ if __name__ == "__main__":
     subs_elm_list.append([["Cu", "Co"]])
 
     for subs_elm in subs_elm_list:
-        print("substitute", subs_elm)
+        print("substitute elements", subs_elm)
 
         for x in subs_db.find_subs_elems(subs_elm):
             basedir = x["basedir"]
@@ -54,11 +54,16 @@ if __name__ == "__main__":
                     struc_matched = True
 
             if not struc_matched:
-                print("execute new struc")
-                print("on new_basedir", new_basedir)
+                print("new_basedir", new_basedir)
                 metadata = {"purpose": "converged_ionic",
                             "achievement": "to_relax"}
                 structurenode = StructureNode(new_basedir)
                 structurenode.place_files(new_struc, source_uuid=source_uuid,
                                           metadata=metadata)
                 subs_db.add_files_under(new_basedir, StructureNode)
+
+    n = subs_db.count_documents()
+    print("database size",n)
+    n = subs_db.count_documents({"achievement": "to_relax"})
+    print("{} data to relax".format(n))
+

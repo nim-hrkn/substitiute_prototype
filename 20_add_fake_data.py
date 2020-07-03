@@ -5,6 +5,7 @@ from subsMat import subs_elms_to_prefix,\
 import os
 import argparse
 import random
+import numpy as np
 
 
 if __name__ == "__main__":
@@ -16,24 +17,24 @@ if __name__ == "__main__":
         """
 
         argparser = argparse.ArgumentParser()
-        argparser.add_argument("--increase_data",
-                               default=False, action="store_true")
+        # argparser.add_argument("--increase_data",
+        #                        default=False, action="store_true")
         args = argparser.parse_args()
 
         action = ["step2"]
-        if args.increase_data:
+        if True:
             action.append("step1")
         return action
 
     action = parse_argument()
 
-    metadata = {"purpose": "prototype", "achievement": "completed"}
-
     if "step1" in action:
+        metadata = {"purpose": "prototype", "achievement": "completed"}
 
-        current_step = "0"
         subs_db = subsMaterialsDatabase().\
             initialize_with_dirs("Calc/MGI/mp-*", StructureNode)
+        n = subs_db.count_documents()
+        print("initial database size",n)
 
         subs_elm_list = [[["Fe", "Cu"]]]
         subs_elm_list.append([["Ni", "Cu"]])
@@ -43,16 +44,16 @@ if __name__ == "__main__":
         subs_elm_list.append([["Gd", "Y"]])
         subs_elm_list.append([["Yb", "Y"]])
 
-        print(subs_elm_list)
+
+        count_list = []
         for subs_elm in subs_elm_list:
 
-            print(subs_elm)
+            print("subsitute elements",subs_elm)
 
+            count = 0
             subs_prefix = subs_elms_to_prefix(subs_elm)
-            print(subs_prefix)
 
             for find in subs_db.find_subs_elems(subs_elm):
-                print(find["species"])
                 basedir = find["basedir"]
                 positionfilename = find["positionfile"]
                 struc = StructureNode(basedir)
@@ -68,13 +69,23 @@ if __name__ == "__main__":
 
                 # target apth
                 basedir_prefix = ",".join([basedir, subs_prefix])
-                print("basedir_prefix", basedir_prefix)
 
                 structurenode = StructureNode(basedir_prefix)
                 ret = structurenode.place_files(structure2, source_uuid=uuid,
                                                 metadata=metadata)
-                print(ret, basedir_prefix)
+                if ret:
+                    count += 1
+
+            print("{} directories are created.".format(count))
+            count_list.append(count)
+
+        count_list = np.array(count_list)
+        print("total {} directories are created.".format(count_list.sum()))
 
     if "step2" in action:
         subs_db = subsMaterialsDatabase().\
                   initialize_with_dirs("Calc/MGI/mp-*", StructureNode)
+        n = subs_db.count_documents()
+        print("final database size",n)
+
+

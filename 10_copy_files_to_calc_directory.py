@@ -1,6 +1,7 @@
 
 import glob
 import os
+import random
 from subsMat import SubsStructure, StructureNode
 
 
@@ -27,6 +28,8 @@ def copy_files_to_calc_directory(souce_prefix, target_base, metadata):
 
     filelist = list(glob.glob(souce_prefix))
 
+    count = 0
+
     for filepath in filelist:
         filepath_ce_list = list(glob.glob(os.path.join(filepath, "[CE]_*")))
         if len(filepath_ce_list) > 1:
@@ -46,10 +49,15 @@ def copy_files_to_calc_directory(souce_prefix, target_base, metadata):
 
         structurenode = StructureNode(basedir_prefix)
         ret = structurenode.place_files(structure2, metadata=metadata)
-        print(ret, structure_file)
+        if ret:
+            count += 1
+
+    return count
 
 
 if __name__ == "__main__":
+    random.seed(10)
     metadata = {"purpose": "prototype", "achievement": "completed"}
-    copy_files_to_calc_directory("Pham-RT/rt_stage5/RUN.00?/mp-*",
-                                 "Calc/MGI", metadata)
+    n = copy_files_to_calc_directory("Pham-RT/rt_stage5/RUN.00?/mp-*",
+                                     "Calc/MGI", metadata)
+    print("{} directories created.".format(n))

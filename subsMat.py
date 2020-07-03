@@ -238,7 +238,7 @@ class subsMaterialsDatabase(object):
             query_elm_dic.update({x[0]: True})
         return query_elm_dic
 
-    def count_documents(self, query):
+    def count_documents(self, query=None):
         """count_documents by collection.count_documents(query)
 
         Parameters
@@ -250,6 +250,8 @@ class subsMaterialsDatabase(object):
         -------
         number of documents = collection.count_documents(query)
         """
+        if query is None:
+            query = {}
         return self.collection.count_documents(query)
 
     def find(self, query):
@@ -510,8 +512,6 @@ class DirNode(object):
             False if already existed
         """
 
-        print(self.__basedir)
-        print(self.__uuid_file)
         filename = os.path.join(self.__basedir,
                                 self.__uuid_file)
         if not os.path.exists(filename):
@@ -539,7 +539,6 @@ class DirNode(object):
         # current UUID
         if uuidstr is None:
             uuidstr = str(uuid.uuid4())
-        print("uuidstr", uuidstr)
         targetdir = self.get_currentdir()
         filename = os.path.join(targetdir, self.__uuid_file)
         if not os.path.exists(filename):
@@ -574,7 +573,6 @@ class DirNode(object):
             currentdir_uuid = str(uuid.uuid4())
             self.set_new_step(currentdir_uuid)
             targetdir = self.get_currentdir()
-            print("targetdir", targetdir)
             os.makedirs(targetdir)
             self.save_currentdir_uuid(currentdir_uuid)
         else:
@@ -765,7 +763,6 @@ class StructureNode(DirNode):
                 cifpath = os.path.join(targetdir, ciffilename)
                 cifwriter = CifWriter(structure)
                 cifwriter.write_file(cifpath)
-                print("write", cifpath)
             else:
                 # as POSCAR
                 poscarfilename = "POSCAR"
@@ -773,7 +770,6 @@ class StructureNode(DirNode):
                 poscarpath = os.path.join(targetdir, poscarfilename)
                 poscar = Poscar(structure)
                 poscar.write_file(poscarpath)
-                print("write", poscarpath)
 
             species = element_list(structure.species)
             dic.update({"species": species, "nspecies": len(species)})

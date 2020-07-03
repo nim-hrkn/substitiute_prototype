@@ -83,7 +83,6 @@ class fakeVaspRunNode(StructureNode):
         super().place_files(structure, source_uuid=source_uuid,
                             metadata=metadata)
         current_dir = self.get_currentdir()
-        print("currentdir", current_dir)
 
         self.make_MITRelaxSet_vasp_inputfiles(structure, current_dir,
                                               write_all=False)
@@ -119,7 +118,6 @@ class fakeVaspRunNode(StructureNode):
         i_conv = random.random() > self.accept_ratio
         e_conv = True
         dic = {"converged_electronic": e_conv, "converged_ionic": i_conv}
-        print(dic)
         filename = os.path.join(self.get_currentdir(), self.result_status_file)
         with open(filename, "w") as f:
             f.write(json.dumps(dic))
@@ -152,4 +150,4 @@ class fakeVaspRunNode(StructureNode):
                 dicm["achievement"] = "to_relax"
         self.save_currentdir_metadata(dicm)
 
-        return dic
+        return dicm
