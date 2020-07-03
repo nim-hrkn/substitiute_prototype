@@ -1,0 +1,54 @@
+# generated using pymatgen
+data_CeCu6
+_symmetry_space_group_name_H-M   'P 1'
+_cell_length_a   5.02918825
+_cell_length_b   8.14531460
+_cell_length_c   10.15926470
+_cell_angle_alpha   90.86824705
+_cell_angle_beta   91.24620419
+_cell_angle_gamma   92.97194796
+_symmetry_Int_Tables_number   1
+_chemical_formula_structural   CeCu6
+_chemical_formula_sum   'Ce4 Cu24'
+_cell_volume   415.45409570
+_cell_formula_units_Z   4
+loop_
+ _symmetry_equiv_pos_site_id
+ _symmetry_equiv_pos_as_xyz
+  1  'x, y, z'
+loop_
+ _atom_site_type_symbol
+ _atom_site_label
+ _atom_site_symmetry_multiplicity
+ _atom_site_fract_x
+ _atom_site_fract_y
+ _atom_site_fract_z
+ _atom_site_occupancy
+  Ce  Ce0  1  0.256762  0.259325  0.435250  1
+  Ce  Ce1  1  0.251342  0.749953  0.057308  1
+  Ce  Ce2  1  0.737143  0.231021  0.925635  1
+  Ce  Ce3  1  0.736787  0.737939  0.558566  1
+  Cu  Cu4  1  0.245682  0.142377  0.140117  1
+  Cu  Cu5  1  0.750541  0.343985  0.633738  1
+  Cu  Cu6  1  0.758104  0.434292  0.404180  1
+  Cu  Cu7  1  0.244961  0.315416  0.735411  1
+  Cu  Cu8  1  0.499539  0.559065  0.798777  1
+  Cu  Cu9  1  0.742315  0.100019  0.478222  1
+  Cu  Cu10  1  0.243699  0.892447  0.505839  1
+  Cu  Cu11  1  0.486835  0.927214  0.299847  1
+  Cu  Cu12  1  0.502775  0.059154  0.684281  1
+  Cu  Cu13  1  0.248867  0.398953  0.975748  1
+  Cu  Cu14  1  0.987906  0.553863  0.807241  1
+  Cu  Cu15  1  0.747063  0.852599  0.852006  1
+  Cu  Cu16  1  0.760230  0.929329  0.088916  1
+  Cu  Cu17  1  0.228861  0.058051  0.900930  1
+  Cu  Cu18  1  0.243466  0.641669  0.348670  1
+  Cu  Cu19  1  0.747707  0.590383  0.012231  1
+  Cu  Cu20  1  0.749084  0.675949  0.253183  1
+  Cu  Cu21  1  0.490297  0.432269  0.189397  1
+  Cu  Cu22  1  0.000864  0.434389  0.183569  1
+  Cu  Cu23  1  0.242471  0.809543  0.755600  1
+  Cu  Cu24  1  0.224791  0.553397  0.592842  1
+  Cu  Cu25  1  0.986099  0.055188  0.687685  1
+  Cu  Cu26  1  0.006774  0.929500  0.308929  1
+  Cu  Cu27  1  0.750987  0.179537  0.239068  1

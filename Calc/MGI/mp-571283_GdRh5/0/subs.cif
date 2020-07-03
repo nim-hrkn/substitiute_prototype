@@ -1,0 +1,32 @@
+# generated using pymatgen
+data_GdRh5
+_symmetry_space_group_name_H-M   'P 1'
+_cell_length_a   5.35796042
+_cell_length_b   5.27504441
+_cell_length_c   4.37545988
+_cell_angle_alpha   90.03136515
+_cell_angle_beta   91.66020719
+_cell_angle_gamma   120.73900925
+_symmetry_Int_Tables_number   1
+_chemical_formula_structural   GdRh5
+_chemical_formula_sum   'Gd1 Rh5'
+_cell_volume   106.22964819
+_cell_formula_units_Z   1
+loop_
+ _symmetry_equiv_pos_site_id
+ _symmetry_equiv_pos_as_xyz
+  1  'x, y, z'
+loop_
+ _atom_site_type_symbol
+ _atom_site_label
+ _atom_site_symmetry_multiplicity
+ _atom_site_fract_x
+ _atom_site_fract_y
+ _atom_site_fract_z
+ _atom_site_occupancy
+  Gd  Gd0  1  0.000000  0.000000  0.000000  1
+  Rh  Rh1  1  0.498351  -0.009739  0.498739  1
+  Rh  Rh2  1  -0.004986  0.493114  0.495148  1
+  Rh  Rh3  1  0.662958  0.326931  -0.000122  1
+  Rh  Rh4  1  0.498162  0.496325  0.493667  1
+  Rh  Rh5  1  0.327273  0.663685  -0.007228  1

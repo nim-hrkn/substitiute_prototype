@@ -1,0 +1,32 @@
+# generated using pymatgen
+data_YbCo2
+_symmetry_space_group_name_H-M   'P 1'
+_cell_length_a   5.06024222
+_cell_length_b   5.02961509
+_cell_length_c   5.10186114
+_cell_angle_alpha   60.25592323
+_cell_angle_beta   61.43787364
+_cell_angle_gamma   61.74247006
+_symmetry_Int_Tables_number   1
+_chemical_formula_structural   YbCo2
+_chemical_formula_sum   'Yb2 Co4'
+_cell_volume   94.14890352
+_cell_formula_units_Z   2
+loop_
+ _symmetry_equiv_pos_site_id
+ _symmetry_equiv_pos_as_xyz
+  1  'x, y, z'
+loop_
+ _atom_site_type_symbol
+ _atom_site_label
+ _atom_site_symmetry_multiplicity
+ _atom_site_fract_x
+ _atom_site_fract_y
+ _atom_site_fract_z
+ _atom_site_occupancy
+  Yb  Yb0  1  0.875000  0.875000  0.875000  1
+  Yb  Yb1  1  0.120444  0.118247  0.119171  1
+  Co  Co2  1  0.490923  0.492177  0.492138  1
+  Co  Co3  1  0.497734  0.491229  -0.006119  1
+  Co  Co4  1  -0.001958  0.493774  0.493052  1
+  Co  Co5  1  0.495420  -0.006300  0.492943  1
