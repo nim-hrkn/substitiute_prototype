@@ -59,6 +59,6 @@ def copy_files_to_calc_directory(souce_prefix, target_base, metadata):
 if __name__ == "__main__":
     random.seed(10)
     metadata = {"purpose": "prototype", "achievement": "completed"}
-    n = copy_files_to_calc_directory("Pham-RT/rt_stage5/RUN.00?/mp-*",
+    n = copy_files_to_calc_directory("../Pham-RT/rt_stage5/RUN.00?/mp-*",
                                      "Calc/MGI", metadata)
     print("{} directories created.".format(n))

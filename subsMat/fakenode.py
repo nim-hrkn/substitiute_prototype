@@ -10,6 +10,7 @@ from .node import StructureNode
 class fakeVaspRunNode(StructureNode):
     """fake VASP class to run without VASP
     """
+
     def __init__(self, basedir_prefix):
         super().__init__(basedir_prefix)
 

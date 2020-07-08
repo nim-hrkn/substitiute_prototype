@@ -1,30 +1,15 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import copy
-import glob
 import json
-import numpy as np
 import os
-import re
 import uuid
-from pathlib import Path
-from typing import Union, List, Sequence
-from collections import Counter
 
-from monty.io import reverse_readfile
-
-from pymatgen.core.composition import Composition
-from pymatgen.core.lattice import Lattice
-from pymatgen.core.structure import Structure
 from pymatgen.io.vasp.inputs import Poscar
 from pymatgen.io.cif import CifWriter
-from pymatgen.core.periodic_table import Element, Specie, DummySpecie
-
-from pymongo import MongoClient
 
 from .misc import element_list
-
+from .structure import SubsStructure
 
 
 def subs_elms_to_prefix(subs_elm):
@@ -59,7 +44,7 @@ class DirNode(object):
 
     metadata contains information on the current directory.
 
-    self.place_files() creats subdirectory if basedir/{id} doesn't exist. 
+    self.place_files() creats subdirectory if basedir/{id} doesn't exist.
 
     """
 
@@ -241,7 +226,8 @@ class DirNode(object):
     def place_files(self):
         """place files on the current subdirectory.
 
-        als make the new step, and the new subdirectory when the actual body doesn't exisst
+        als make the new step, and the new subdirectory
+        when the actual body doesn't exist
 
         Parameters
         ----------
@@ -446,5 +432,3 @@ class StructureNode(DirNode):
             return True
         else:
             return False
-
-

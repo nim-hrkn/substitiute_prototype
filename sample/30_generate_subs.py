@@ -8,7 +8,6 @@ from subsMat.node import subs_elms_to_prefix, StructureNode
 from subsMat.database import SubsMaterialsDatabase
 
 
-
 if __name__ == "__main__":
 
     random.seed(10)
@@ -65,7 +64,6 @@ if __name__ == "__main__":
                 subs_db.add_files_under(new_basedir, StructureNode)
 
     n = subs_db.count_documents()
-    print("database size",n)
+    print("database size", n)
     n = subs_db.count_documents({"achievement": "to_relax"})
     print("{} data to relax".format(n))
-

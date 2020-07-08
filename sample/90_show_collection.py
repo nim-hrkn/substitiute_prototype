@@ -10,13 +10,14 @@ if __name__ == "__main__":
         argparser = argparse.ArgumentParser()
         argparser.add_argument("--detail",
                                choices=["to_relax",
-                               "running", "executed", "completed"])
+                                        "running", "executed",
+                                        "completed"])
         args = argparser.parse_args()
 
         return args.detail
 
     def make_filterdict(action):
-        """make filter string 
+        """make filter string
 
         Parameters
         ----------
@@ -42,7 +43,7 @@ if __name__ == "__main__":
 
     subs_db = SubsMaterialsDatabase()
     result = []
-    for process in ["all","to_relax", "running", "executed", "completed"]:
+    for process in ["all", "to_relax", "running", "executed", "completed"]:
 
         filterdic = make_filterdict(process)
         n = subs_db.count_documents(filterdic)
@@ -54,4 +55,3 @@ if __name__ == "__main__":
         filterdic = make_filterdict(action)
         for doc in subs_db.find(filterdic):
             print(doc)
-

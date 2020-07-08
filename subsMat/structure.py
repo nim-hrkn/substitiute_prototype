@@ -1,27 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import copy
-import glob
-import json
 import numpy as np
-import os
-import re
-import uuid
-from pathlib import Path
 from typing import Union, List, Sequence
-from collections import Counter
-
-from monty.io import reverse_readfile
 
 from pymatgen.core.composition import Composition
 from pymatgen.core.lattice import Lattice
 from pymatgen.core.structure import Structure
-from pymatgen.io.vasp.inputs import Poscar
-from pymatgen.io.cif import CifWriter
 from pymatgen.core.periodic_table import Element, Specie, DummySpecie
-
-from pymongo import MongoClient
 
 from .misc import element_list
 
@@ -29,6 +15,7 @@ from .misc import element_list
 class SubsStructure(Structure):
     """Another pymatgen.Structure class for element substitution
     """
+
     def __init__(self,
                  lattice: Union[List, np.ndarray, Lattice],
                  species: Sequence[Union[str, Element, Specie,

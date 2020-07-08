@@ -4,7 +4,6 @@ from subsMat.node import subs_elms_to_prefix, StructureNode
 from subsMat.database import SubsMaterialsDatabase
 
 import os
-import argparse
 import random
 import numpy as np
 
@@ -16,11 +15,10 @@ if __name__ == "__main__":
     def parse_argument():
         """define argument parser
         """
-
-        argparser = argparse.ArgumentParser()
+        # argparser = argparse.ArgumentParser()
         # argparser.add_argument("--increase_data",
         #                        default=False, action="store_true")
-        args = argparser.parse_args()
+        # args = argparser.parse_args()
 
         action = ["step2"]
         if True:
@@ -35,7 +33,7 @@ if __name__ == "__main__":
         subs_db = SubsMaterialsDatabase().\
             initialize_with_dirs("Calc/MGI/mp-*", StructureNode)
         n = subs_db.count_documents()
-        print("initial database size",n)
+        print("initial database size", n)
 
         subs_elm_list = [[["Fe", "Cu"]]]
         subs_elm_list.append([["Ni", "Cu"]])
@@ -45,11 +43,10 @@ if __name__ == "__main__":
         subs_elm_list.append([["Gd", "Y"]])
         subs_elm_list.append([["Yb", "Y"]])
 
-
         count_list = []
         for subs_elm in subs_elm_list:
 
-            print("subsitute elements",subs_elm)
+            print("subsitute elements", subs_elm)
 
             count = 0
             subs_prefix = subs_elms_to_prefix(subs_elm)
@@ -87,6 +84,4 @@ if __name__ == "__main__":
         subs_db = SubsMaterialsDatabase().\
                   initialize_with_dirs("Calc/MGI/mp-*", StructureNode)
         n = subs_db.count_documents()
-        print("final database size",n)
-
-
+        print("final database size", n)

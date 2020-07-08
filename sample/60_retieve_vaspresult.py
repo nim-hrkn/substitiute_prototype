@@ -32,4 +32,3 @@ if __name__ == "__main__":
     result = [x["achievement"] for x in result_list]
     counter = Counter(result)
     print(counter)
-
