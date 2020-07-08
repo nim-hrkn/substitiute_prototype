@@ -174,6 +174,9 @@ collectionの削除。
 
 
 # 実行例
+
+sample/ directory下で実行する。
+
 ## 20_add_fake_data.py
 ```
 $ python 20_add_fake_data.py
