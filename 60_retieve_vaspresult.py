@@ -2,13 +2,14 @@
 import random
 from collections import Counter
 
-from subsMat import subsMaterialsDatabase, StructureNode
+from subsMat.database import SubsMaterialsDatabase
+from subsMat.node import StructureNode
 
-from fakevasprun import fakeVaspRunNode
+from subsMat.fakenode import fakeVaspRunNode
 
 if __name__ == "__main__":
     random.seed(10)
-    subs_db = subsMaterialsDatabase()
+    subs_db = SubsMaterialsDatabase()
     filter = {"purpose": "converged_ionic", "achievement": "executed"}
 
     result_list = []

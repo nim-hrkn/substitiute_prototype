@@ -1,6 +1,7 @@
-from subsMat import subs_elms_to_prefix,\
-                    SubsStructure, StructureNode,\
-                    subsMaterialsDatabase
+
+from subsMat.structure import SubsStructure
+from subsMat.node import subs_elms_to_prefix, StructureNode
+from subsMat.database import SubsMaterialsDatabase
 
 import os
 import argparse
@@ -31,7 +32,7 @@ if __name__ == "__main__":
     if "step1" in action:
         metadata = {"purpose": "prototype", "achievement": "completed"}
 
-        subs_db = subsMaterialsDatabase().\
+        subs_db = SubsMaterialsDatabase().\
             initialize_with_dirs("Calc/MGI/mp-*", StructureNode)
         n = subs_db.count_documents()
         print("initial database size",n)
@@ -83,7 +84,7 @@ if __name__ == "__main__":
         print("total {} directories are created.".format(count_list.sum()))
 
     if "step2" in action:
-        subs_db = subsMaterialsDatabase().\
+        subs_db = SubsMaterialsDatabase().\
                   initialize_with_dirs("Calc/MGI/mp-*", StructureNode)
         n = subs_db.count_documents()
         print("final database size",n)

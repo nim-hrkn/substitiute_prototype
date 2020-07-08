@@ -2,7 +2,8 @@
 import glob
 import os
 import random
-from subsMat import SubsStructure, StructureNode
+from subsMat.structure import SubsStructure
+from subsMat.node import StructureNode
 
 
 def copy_files_to_calc_directory(souce_prefix, target_base, metadata):

@@ -1,5 +1,5 @@
 import argparse
-from subsMat import subsMaterialsDatabase
+from subsMat.database import SubsMaterialsDatabase
 
 
 if __name__ == "__main__":
@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     action = parse_argument()
 
-    subs_db = subsMaterialsDatabase()
+    subs_db = SubsMaterialsDatabase()
     result = []
     for process in ["all","to_relax", "running", "executed", "completed"]:
 

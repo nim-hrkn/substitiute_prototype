@@ -1,16 +1,17 @@
 import random
 from collections import Counter
 
-from subsMat import subsMaterialsDatabase, StructureNode
+from subsMat.database import SubsMaterialsDatabase
+from subsMat.node import StructureNode
 
-from fakevasprun import fakeVaspRunNode
+from subsMat.fakenode import fakeVaspRunNode
 
 
 if __name__ == "__main__":
 
     def run_them():
         random.seed(10)
-        subs_db = subsMaterialsDatabase()
+        subs_db = SubsMaterialsDatabase()
         filterstring = {"purpose": "converged_ionic", "achievement": "to_relax"}
         for x in subs_db.find(filterstring):
             id_ = x["_id"]
@@ -33,7 +34,7 @@ if __name__ == "__main__":
     if False:
         def get_run_result():
             random.seed(10)
-            subs_db = subsMaterialsDatabase()
+            subs_db = SubsMaterialsDatabase()
             result_list = []
             filterstring = {"purpose": "converged_ionic", "achievement": "running"}
             for x in subs_db.find(filterstring):
