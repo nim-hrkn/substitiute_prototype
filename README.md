@@ -3,179 +3,180 @@
 This software includes the work that is distributed in the Apache License 2.0.
 
 
-# 基本設計
+# Basic Design
 
-## 実体と仮想体
+## Real and virtual bodies
 
-実装ではファイルとデータベース(mongoDB)を用いる。
-ファイルが実体であり、データベース上の情報は高速化のための仮想体である。
-データベースに入れる場合は一度ファイルに実体を置いてからファイルを内容（実体）を読み込みデータベースに入れるように実装している。
+The implementation uses a file and a database (mongoDB).
+The file is the entity and the information on the database is the virtual body for speeding up the process.
+To put an entity in the database, it is implemented so that the entity is placed in a file and the content (entity) of the file is read into the database once.
 
-これによりデータベースが破棄されても、またデータベースを使用しなくても、ファイルから結果の構成を可能にすることが目的である。
+The purpose of this is to enable reconstruction of results from files even if the database is destroyed and even if the database is not used.
 
 ## 構造を置くdirectory
-ファイルは物質毎にbasedirで指定されるdirectoryに置かれる。
-directoryとsubdirectoryは名前とidを持つ。
+The files are placed in the directory specified in the baseir for each substance.
+directories and subdirectories have a name and an id.
 
-物質はfilesystem上でbasedirの下のsubdirectoryに保存される。
-SCFなどを何度も行い、結果を別subdirectoryに保存するために異なるsubdirectoryが生成される。
+The substance is stored on the filesystem in a subdirectory under the baseir/.
+SCF, etc. many times, and a different subdirectory is created to store the results in a different subdirectory.
 
 basedir/{id1name} -> basedir/{id2name} -> basedir/{id3name}
 
-と履歴は進む。（それぞれのid?nameはid?を持つ。）
+and the history proceeds. (Each id?name has an id?name.)
 
-## directory内のmetadata
-basedir内のmetadataが現在使われているsubdirectoryの説明情報を持つ。
-subdirectoryのmetadataはsubdirectoryの説明情報を持つ。
+## metadata in the directory
+The metadata in the basedir contains descriptive information about the subdirectory currently being used.
+The metadata of the subdirectory has descriptive information about the subdirectory.
 
-ユーザーはbasedirでdirectoryを指定すると、basedirのmetadataで指定される現在のsubdirectoryの位置を得て、そのsubdirectoryから構造などにアクセスする。
+When the user specifies a directory in the baseir, the user gets the current subdirectory position specified in the baseir's metadata, and then accesses the structure, etc. from that subdirectory.
 
-## basedirの要素
-basedirは以下のファイルを必ず持つ。
+## elements of basedir
+basedir must have the following files.
 
 * basedir/_uuid: uuid of basedir
 
-idは上書きされない。
+The id will not be overwritten.
 
 * basedir/metadata.json: metadata of basedir
 
-metadata内にbasedirの現在のdirectory情報を持つ。
+The metadata has the current directory information of the baseir.
 
 * basedir/{idname}: basedir subdirectory
 
-最初のidname(idとは違う)は0と定義する。
+The first idname (not the same as the id) is defined as 0.
 
-## basedir/{id}の要素
-basedir/{idname}は必ず以下のファイルを持つ。
+## basedir/{id} elements
+basedir/{idname} must have the following files.
 * basedir/{idname}/_uuid: id of basedir/{idname}
 
-idは上書きされない。
+The id will not be overwritten.
 
 * basedir/{idname}/metadata.json: metadata of basedir/{idname}
 
-basedir/{idname}のmetadata は現在の構造のソース構造のidを持つ。
-ソース構造のidは別のbasedirのidのはずである。
+The metadata in {basedir/{idname} has the id of the source structure of the current structure.
+The id of the source structure should be the id of another basedir.
 
-## metadataの要素
-basedir/{idname}のmetadata は
-* 目的（purpose）
-* その達成度（achievement）
+### metadataの要素
+The metadata in basedir/{idname} has
+* purpose
+* its achievement.
 
-を持つ。
+### Description of purpose and achievement
 
-### 目的purposeと達成度achievementの記述
+The following is a description of the achievement of each objective.
 
-以下に、目的毎にその達成度を記す。
+#### in the case of "purpose"=="prototype"
 
-#### "purpose"=="prototype"の場合
+The subdirectory has a structure that has been optimized by something, such as experimental values or structural optimization.
 
-subdirectoryが
-実験値や構造最適化などで何かにより最適化された構造を持つ事を示す。
-
-以下の組み合わせを持つ。
+It has a combination of the following.
 
 {"purpose": "prototype", "achievement": "completed"}
 
 
-#### "purpose"=="converged_ionic"の場合
+#### in the case of "purpose"=="converged_ionic"
 
-subdirectory内の構造が構造最適化を行う事を示す。
+It shows that a structure with a subdirectory performs structural optimization.
 
-##### 達成状態の定義
-以下の達成状態"achievement"を持つ。
+##### Definition of Achievement
+It has the following achievement states.
 
 1. "achievement": "to_relax"
 
-これから構造最適化を行うという状態を示す。構造ファイルのみを持つ。
+It indicates the state that we are about to perform structural optimization. It has a structure file only.
 
-{"purpose": "prototype", "achievement": "completed"}から
-{"purpose": "converged_ionic", "achievement": "to_relax"}に
-状態遷移する。
+The state transition from
+{"purpose": "prototype", "achievement": "completed"} to
+{"purpose": "converged_ionic", "achievement": "to_relax"}
+
 
 2. "achievement": "running"
 
-構造最適化プログラムの入力を作成し、構造最適化プログラム実行している状態を示す。
+It shows the state in which the structural optimization program input is created and the structural optimization program is being executed.
 
 3. "achievement": "executed"
 
-構造最適化プログラムが終了した状態を示す。
+It indicates that the structural optimization program has been completed.
 
 4. "achievement", "completed"
 
-構造最適化が完了した状態を示す。
+It indicates that structural optimization has been completed.
 
 ##### 達成状態の遷移
-1. -> 2. -> 3. -> (1.もしくは4.)に遷移する。
+
+1. -> 2. -> 3. -> (1. or 4.)
 
 
-# サンプルの説明
+# Sample Description
 
-purposeとachievementで検索を行い、対応する状態にある物質に対して操作を行っていく。そして状態を変更する。
+Search by purpose and achievement and operate on the substance in the corresponding state. do. In the process, the state is changed.
 
-順序手続き言語向けの実装をしていない。
-多くの部分でtuple spaceなどの手順並列法を想定して実装しているが、
-手順毎のフローチャートにも変換はできる。
+We do not have an implementation for sequential programming languages.
+We implemented it assuming parallel methods such as tuple space, but it can be converted to sequence flowcharts.
 
-## 初期構造作成過程
+## initial structure creation process
 
-以下の過程でデータベースも用いる。
+A database is also used in the following process.
 
 ### 20_add_fake_data.py
 
-なる物質を他のdirectoryからコピーして元素置換して物質を増やす。
-テストデータ用に生成しているだけなので元素置換した物質は構造最適化されていない。
-{"purpose”: “prototype", "achievement": "completed"}にし、データベース上にも置く。
+Increasing material by copying it from another directory and substituting elements.
+Element-substituted materials are not structure-optimized because they are only generated for test data.
+The state is changed to {"purpose": "prototype", "achievement": " completed"} and put it in the database.
 
 ### 30_generate_subs.py
-{"purpose”: “prototype", "achievement": "completed"}の物質
-の元素置換を行い、それぞれ別のbasedirに置く。そのsubdirectoryは
+Replace elements in materials in {"purpose": "prototype", "achievement": " completed"} and place them in different baseir.
+The status of the subdirectory is changed to
 {"purpose": "converged_ionic", "achievement": "to_relax"}
-とする。
 
-## 構造最適化過程
-以下で用いる「物質」はbasedirで指定されるdirectory下に実体がある。
-{"purpose": "converged_ionic", "achievement":??? }を書き換えて状態を記述していく。
-異なる目的を実行する場合はpurposeを変える。(subdirectoryも変える。)
+
+## structural optimization process
+Material used below has entities under the directory specified by "basedir".
+It changes {"purpose": "converged_ionic", "achievement". ":?? } to describe the state.
+If you want to implement a different purpose, change the purpose. (Change the subdirectory as well.)
 
 ### 40_fakevasprun.py
-動作確認用に
-{"purpose": "converged_ionic", "achievement": "to_relax"}
-となっている物質に対して、vaspの入力を作成し、仮想的に実行する。
-仮想的というのはsubdirectoryのmetadataで
-{"purpose": "converged_ionic", "achievement": "running"}
-にするという意味である。
+
+To check the operation.
+Create vasp inputs and execute them virtually for a substance that is
+{"purpose": "converged_ionic", "achievement": "to_relax"}.
+
+Virtual means that it is not executed, but instead it changes
+{"purpose": "converged_ionic", "achievement": "running"} in a metadata of the subdirectory.
+
+
 
 ### 50_fakevaspresult.py
+For materials,
 {"purpose": "converged_ionic", "achievement": "running"}
-となっている物質に対して、
-仮想的に
+virtually it changes the state to
 {"purpose": "converged_ionic", "achievement": "executed"}
-にする。
-また、ランダムに結果（converged_ionicが達成されたかどうか）
-をファイルに書いておく。
+
+It also randomly produces a result (whether or not converged_ionic was achieved)
+in the file.
 
 ### 60_retieve_vaspresult.py
-{"purpose": "converged_ionic", "achievement": "executed"}
-と成っている物質に対して、
-converged_ionicが達成されたら "achievement": "completed"}とし、
-達成されていなかったら"achievement": "to_relax"とする。
+For materials,
+{"purpose": "converged_ionic", "achievement": "executed"},
+it changes  "achievement": "completed" if converged_ionic is fulfilled.
+it changes "achievement": "to_relax" if not.
 
-"achievement": "to_relax"の物質が残っていたら再度40_fakevasprun.pyから実行する。
+If there are any material left in the "achievement": "to_relax" again 40_fakevasprun.py must be run.
 
-## DB表示と削除
+## DB View and Delete
 
 ### 90_show_db.py
 
-databaseの中身の表示。
+Displays the contents of the database.
 
 ### 95_remove_collection.py
 
-collectionの削除。
+Removal of the collection.
 
 
-# 実行例
+# Execution example
 
-sample/ directory下で実行する。
+Run it under sample/ directory.
 
 ## 20_add_fake_data.py
 ```
