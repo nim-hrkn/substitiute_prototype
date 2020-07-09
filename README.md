@@ -13,7 +13,7 @@ To put an entity in the database, it is implemented so that the entity is placed
 
 The purpose of this is to enable reconstruction of results from files even if the database is destroyed and even if the database is not used.
 
-## 構造を置くdirectory
+## Directory to place the structure
 The files are placed in the directory specified in the baseir for each substance.
 directories and subdirectories have a name and an id.
 
@@ -56,7 +56,7 @@ The id will not be overwritten.
 The metadata in {basedir/{idname} has the id of the source structure of the current structure.
 The id of the source structure should be the id of another basedir.
 
-### metadataの要素
+### The elements of the metadata
 The metadata in basedir/{idname} has
 * purpose
 * its achievement.
@@ -102,7 +102,7 @@ It indicates that the structural optimization program has been completed.
 
 It indicates that structural optimization has been completed.
 
-##### 達成状態の遷移
+##### Transition of achievement state
 
 1. -> 2. -> 3. -> (1. or 4.)
 
